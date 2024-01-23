@@ -5,78 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ATM and Bank Branch Locator</title>
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <style>
-        body {
-            padding-top: 56px; /* Adjust based on your navbar height */
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-        .navbar1 {
-            margin-bottom: 20px; /* Add space between the navbar and the content */
-        }
-
-        #map {
-            height: 500px; /* Set the map container height */
-            margin-top: 20px; /* Adjust margin top for spacing */
-        }
-
-        .search-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        #search-input {
-            width: 80%;
-            max-width: 400px;
-        }
-    </style>
 </head>
 <body>
-<div class="navbar1 fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">ATM Locator</a>
+    <div class="navbar1 fixed-top">
+        <nav class="navbar navbar-expand-lg bg-danger">
+        <a class="navbar-brand text-white" href="#">ATM Locator</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        
+         
+        
+        <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
+                    <li class="nav-item">
+                <a class="nav-link text-white" href="#">Contact</a>
+                    </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Admin</a>
+                    <a class="nav-link text-white" href="stafflogin.php">Login</a>
                 </li>
             </ul>
         </div>
+        
     </nav>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="search-container">
-                <form class="form-inline my-2 my-lg-0">
-                    <input id="search-input" class="form-control mr-sm-2" type="search"
-                           placeholder="Please enter a postcode, town, or address" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+    <section id="main">
+        <div id="content" class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="search-container">
+                            <form class="form-inline my-2 my-lg-0 center">
+                                <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Please enter a postcode, town, or address" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="map"></div>
+                    </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
+    </section>
+
+    <!--Bootstrap example-->>
+    <div class="container">
+        <footer class="py-3 my-4">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+          </ul>
+          <p class="text-center text-muted">© 2024 ATM Finder</p>
+        </footer>
+      </div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>

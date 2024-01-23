@@ -18,3 +18,38 @@
 .navbar.bg-danger {
     background-color: #ec0000!important;
 }
+
+
+body {
+    padding-top: 56px; /* Adjust based on your navbar height */
+}
+
+.navbar1 {
+    margin-bottom: 20px; /* Add space between the navbar and the content */
+}
+
+#map {
+    height: 500px; /* Set the map container height */
+    margin-top: 20px; /* Adjust margin top for spacing */
+}
+
+.search-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#search-input {
+    width: 80%;
+    max-width: 400px;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    text-align:center;
+  }
+
+  #content
+  {
+    height:100vh;
+  }
