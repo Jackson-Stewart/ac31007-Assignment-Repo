@@ -4,3 +4,17 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#main {
+    background:#f9f9f9;
+}
+
+#nav 
+{
+    color:#FF0000;
+}
+
+/*Santander colours change */
+.navbar.bg-danger {
+    background-color: #ec0000!important;
+}
