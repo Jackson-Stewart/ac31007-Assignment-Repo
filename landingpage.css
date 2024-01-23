@@ -1,0 +1,23 @@
+.button-container {
+    display: flex;
+    justify-content: space-around; /* Adjust the space between buttons */
+    margin-top: 20px; /* Add some space between the header and buttons */
+}
+
+.animate-button {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    background-color: #ff0000; /* Red color */
+    color: #ffffff; /* White text */
+    padding: 100px 200px; /* Increase the size of the buttons */
+    margin: 100px; /* Adjust the space between buttons */
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 64px;
+}
+
+.animate-button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
