@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function redirectToCustomer() {
-    window.location.href = 'customer.html'; // Replace with the actual path to your customer page
+    window.location.href = 'index.html'; // Replace with the actual path to your customer page
 }
 
 function redirectToStaff() {
