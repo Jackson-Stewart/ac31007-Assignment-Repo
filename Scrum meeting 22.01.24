@@ -1,0 +1,22 @@
+Daily Scrum Standup Meeting
+Scrum Master: Jackson
+Product Owner: John
+Development Team: Tim, Sam, Adrian, Cezary, Uwais, Stacy
+
+Look through marking rubrics to see the components which are of the most value and based on that decide on what to include in the first Sprint.
+
+Evaluate user stories we think are of most value, consulting with product owner (John) to ensure these are of the highest priority. 	
+
+Pull them from the product backlog into the first Sprint on Linear and GitHub, update the Definition of Done for each one and the Task List.
+
+Begin API development to fetch JSON data from database and begin the website including a CSS framework and the leaflet library.
+
+Delegated tasks:
+API development: Tim, Sam, Jackson
+Database development: Adrian, Cezary
+Website development: Stacy, Uwais, John
+
+
+
+
+
