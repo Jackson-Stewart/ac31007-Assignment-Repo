@@ -21,3 +21,5 @@ def getAtms(lat, long, radius):      #lat long and radius will be passed in from
         print (result)                    #print result
     finally:
         cnx.close()
+
+getAtms(1,2,3)
