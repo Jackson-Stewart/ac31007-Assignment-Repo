@@ -7,17 +7,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }).addTo(map);
 
     // Sample ATM and Bank Branch data (replace this with your actual data)
-    var locations = [
-        { lat: 51.5, lng: -0.09, name: 'ATM 1' },
-        { lat: 51.52, lng: -0.1, name: 'Bank Branch 1' },
-        // Add more locations as needed
+    var apiResponse = [
+        {
+            'latitude': 51.513534,
+            'longitude': -0.092826,
+            'branch_name': 'Cheapside 69',
+            'opening_hours_monday': '09:00 - 16:30',
+            'opening_hours_friday': '09:00 - 16:30',
+            'contact_phone': '08000284157'
+        },
+        // Add more API response data as needed
     ];
 
-    // Loop through locations and add markers to the map
-    locations.forEach(function (location) {
-        var marker = L.marker([location.lat, location.lng]).addTo(map);
-        marker.bindPopup('<b>' + location.name + '</b>');
-    });
+    // Function to create markers for API locations
+    function createAPIMarkers(apiLocations) {
+        apiLocations.forEach(function (location) {
+            var marker = L.marker([location.latitude, location.longitude]).addTo(map);
+            marker.bindPopup('<b>' + location.branch_name + '</b><br>' + 'Opening hours: ' + location.opening_hours_monday + ' - ' + location.opening_hours_friday + '<br>' + 'Phone: ' + location.contact_phone);
+        });
+    }
+
+    // Use the API response data to create markers
+    createAPIMarkers(apiResponse);
 
     // Add a popup to the initial marker
     var initialPopup = L.popup()
