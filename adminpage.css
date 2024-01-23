@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    background-color: #ec0000;
+    overflow: hidden;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    max-width: 800px;
+    width: 100%;
+}
+
+.tablinks {
+    background-color: #ec0000;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.tablinks:hover {
+    background-color: #ff3333;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    text-align: center;
+}
+
+#branchEditor {
+    background-color: #f4f4f4;
+}
+
+#ATMManagement {
+    background-color: #f4f4f4;
+}
