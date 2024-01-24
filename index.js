@@ -44,5 +44,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .openOn(map);
     });
 
+    async function PullData() {
+        const response = await fetch("https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=52.415085&long=-4.083687&radius=15&table=branches");
+        const ATM = await response.json();
+        console.log(ATM);
+    }
+
+    PullData;
+
+
+//    fetch('https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=52.415085&long=-4.083687&radius=15&table=branches')
+// .then(response => response.json())
+//  .then(data => console.log(data))
+//  .catch(error => console.error('Error:', error));
+
     // Add more functionalities as needed
 });
