@@ -52,6 +52,11 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude) {
                         + '</b><br>Sunday: ' + location.openingHoursSunday);
     });
 
+    const firstLocation = document.querySelector("#branch-info").dataset.location;
+    if (!firstLocation) {
+      displayBranchDetails(apiUrl, 0);
+    }
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -83,6 +88,11 @@ function geoFindMe() {
     const presetLongitude = -0.09;
     const presetApiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
+
+    const firstLocation = document.querySelector("#branch-info").dataset.location;
+    if (!firstLocation) {
+      displayBranchDetails(presetApiUrl, 0);
+    }
   }
 
   function error() {
@@ -106,4 +116,27 @@ function geoFindMe() {
       usePresetLocation();
     }
   }
+}
+
+function displayBranchDetails(apiUrl, index) {
+  const branchInfoDiv = document.getElementById('branch-info');
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const branch = data[index];
+      branchInfoDiv.innerHTML = `
+        <h3>${branch.branch_name}</h3>
+        <p><strong>Opening Hours:</strong></p>
+        <p>Monday: ${branch.opening_hours_monday}</p>
+        <p>Tuesday: ${branch.opening_hours_tuesday}</p>
+        <p>Wednesday: ${branch.opening_hours_wednesday}</p>
+        <p>Thursday: ${branch.opening_hours_thursday}</p>
+        <p>Friday: ${branch.opening_hours_friday}</p>
+        <p>Saturday: ${branch.opening_hours_saturday}</p>
+        <p>Sunday: ${branch.opening_hours_sunday}</p>
+        <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      `;
+    })
+    .catch(error => console.error('Error fetching data:', error));
 }
