@@ -1,62 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map("map").setView([51.505, -0.09], 13);
+    var map = L.map("map").setView([51.505, -0.09], 6);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    // Sample ATM and Bank Branch data (replace this with your actual data)
-    var apiResponse = [
-        {
-            'latitude': 51.513534,
-            'longitude': -0.092826,
-            'branch_name': 'Cheapside 69',
-            'opening_hours_monday': '09:00 - 16:30',
-            'opening_hours_friday': '09:00 - 16:30',
-            'contact_phone': '08000284157'
-        },
-        // Add more API response data as needed
-    ];
+    fetch('https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/production/transactions?lat=52.415085&long=-4.083687&radius=10&table=branches')
+        .then(response => response.json())
+        .then(data => {
+            var locations = data.map(branch => ({
+                lat: parseFloat(branch.latitude),
+                lng: parseFloat(branch.longitude),
+                name: branch.branch_name,
+                openingHoursMonday: branch.opening_hours_monday,
+                openingHoursTuesday: branch.opening_hours_tuesday,
+                openingHoursWednesday: branch.opening_hours_wednesday,
+                openingHoursThursday: branch.opening_hours_thursday,
+                openingHoursFriday: branch.opening_hours_friday,
+                openingHoursSaturday: branch.opening_hours_saturday,
+                openingHoursSunday: branch.opening_hours_sunday,
+                accessibility: branch.accessibility
 
-    // Function to create markers for API locations
-    function createAPIMarkers(apiLocations) {
-        apiLocations.forEach(function (location) {
-            var marker = L.marker([location.latitude, location.longitude]).addTo(map);
-            marker.bindPopup('<b>' + location.branch_name + '</b><br>' + 'Opening hours: ' + location.opening_hours_monday + ' - ' + location.opening_hours_friday + '<br>' + 'Phone: ' + location.contact_phone);
-        });
-    }
+            }));
 
-    // Use the API response data to create markers
-    createAPIMarkers(apiResponse);
+            locations.forEach(function (location) {
+                var marker = L.marker([location.lat, location.lng]).addTo(map);
+                marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: ' + '</b><br>Monday: ' + location.openingHoursMonday + '</b><br>Tueday: ' + location.openingHoursTuesday + '</b><br>Wednesday: ' + location.openingHoursWednesday + '</b><br>Thursday: ' + location.openingHoursThursday +  '</b><br>Friday: ' + location.openingHoursFriday +  '</b><br>Saturday: ' + location.openingHoursSaturday +  '</b><br>Sunday: ' + location.openingHoursSunday);
+                });
 
-    // Add a popup to the initial marker
-    var initialPopup = L.popup()
-        .setLatLng([51.1, -0.09])
-        .setContent("Closing time: " + "Opening time: " + "This branch is wheelchair accessible")
-        .openOn(map);
+            map.on('click', function (e) {
+                var clickPopup = L.popup()
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            });
 
-    // Add an event to the map to display coordinates on click
-    map.on('click', function (e) {
-        var clickPopup = L.popup()
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
-    });
-
-    async function PullData() {
-        const response = await fetch("https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=52.415085&long=-4.083687&radius=15&table=branches");
-        const ATM = await response.json();
-        console.log(ATM);
-    }
-
-    PullData;
-
-
-//    fetch('https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=52.415085&long=-4.083687&radius=15&table=branches')
-// .then(response => response.json())
-//  .then(data => console.log(data))
-//  .catch(error => console.error('Error:', error));
-
-    // Add more functionalities as needed
+        })
+        .catch(error => console.error('Error fetching data:', error));
 });
