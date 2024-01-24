@@ -1,87 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ATM and Bank Branch Locator</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-</head>
-<body>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </head>
+  <body>
     <div class="navbar1 fixed-top">
-        <nav class="navbar navbar-expand-lg bg-danger">
+      <nav class="navbar navbar-expand-lg bg-danger">
         <a class="navbar-brand text-white" href="#">ATM Locator</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
-        
-         
-        
-        <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link text-white" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                    <li class="nav-item">
-                <a class="nav-link text-white" href="#">Contact</a>
-                    </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="stafflogin.php">Login</a>
-                </li>
-            </ul>
-        </div>
-        
-    </nav>
-</div>
-    <section id="main">
-        <div id="content" class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="search-container">
-                            <form class="form-inline my-2 my-lg-0 center"> <div class="containers">
-                               <div class="row"> <input id="search-input" class="form-control mr-sm-2" 
-                                type="search" placeholder="Please enter a postcode, town, or address" aria-label="Search"></div> 
-                               <div class="row"> <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button> </div> </div>
-                            </form>
-                        </div>
-                    </div>
-                    </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="map"></div>
-                    </div>
-            </div>
-        </div>
-    </section>
 
-    <!--Bootstrap example used for footer-->>
-    <div class="container">
-        <footer class="py-3 my-4">
-          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link text-white" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="stafflogin.php">Login</a>
+            </li>
           </ul>
-          <p class="text-center text-muted">© 2024 ATM Finder</p>
-        </footer>
+        </div>
+      </nav>
+    </div>
+    <section id="main">
+      <div id="content" class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="search-container">
+              <form class="form-inline my-2 my-lg-0 center">
+                <div class="containers">
+                  <div class="row">
+                    <input
+                      id="search-input"
+                      class="form-control mr-sm-2"
+                      type="search"
+                      placeholder="Please enter a postcode, town, or address"
+                      aria-label="Search"
+                    />
+                  </div>
+                  <div class="row">
+                    <button
+                      class="btn btn-outline-danger my-2 my-sm-0"
+                      type="submit"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="map"></div>
+          </div>
+        </div>
       </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
-<script src="index.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-</body>
+      <div class="slideContainer">
+         <div class="sliders">
+            <div class="words">Wheelchair Accesible</div>
+            <div class="words">
+<label class="switch">
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+            </div>
+
+              <div class="words">AudioCash Machine</div>
+            <div class="words">
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+            
+          
+      </div>
+     
+     
+
+     <div class="services">
+           <div class="words"><p>Cash Withdrawal</p> 
+            
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+
+               <div class="words"><p>Pin Change</p>
+            
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+
+               <div class="words"><p>Cash Deposits</p> 
+           
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+
+               <div class="words"> <p>Cheque Deposits</p>
+           
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+
+               <div class="words"><p>Balance</p> 
+            
+<label class="switch"> 
+    <!-- checked -->
+          <input type="checkbox"  />
+          <span class="slider round"></span>
+        </label>
+            </div>
+     </div> 
+      </div>
+    </section>
+
+    <!--Bootstrap example used for footer-->
+    <div class="container">
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-muted">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-muted">Features</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-muted">FAQs</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link px-2 text-muted">About</a>
+          </li>
+        </ul>
+        <p class="text-center text-muted">© 2024 ATM Finder</p>
+      </footer>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="index.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
