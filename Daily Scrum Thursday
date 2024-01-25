@@ -1,0 +1,10 @@
+Daily Scrum Standup Meeting Thursday 25/01/24
+ Added the personal marker for showing the location of whoever uses it, wanted to implement it in a different colour right now, yesterday making the index look better by adding shadows, fixing footer, fixing toggles and some other things. Also spent a bit of time making the code readable and deleting redundant stuff in html and some css. Commented the py script and added it to git along with sql.
+ Working on API and CORs issues
+Implemented search function on the map and made it work with either that or the user location which has been completed
+Worked on admin page which displays branch/ATM details for a searched location – more work to be done on this in second sprint
+Reviewed commits and commented on them
+Sprint backlog updated
+Reviewed scrum methodologies and prepared for sprint review 
+Made powerpoint and notes on sprint
+
