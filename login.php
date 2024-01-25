@@ -8,14 +8,25 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.css">
-    <title>Staff Login Page</title>
+    <title>Admin Login Page</title>
 </head>
 
 <body>
+
+    <!-- navigation bar at the top of the page, has return button which redirects to index.html -->
+    <nav>
+        <div class="navbar">
+            <div class="nav-buttons">
+                <a href="index.html"><button class="return-button">Return to Main Page</button></a>
+            </div>
+        </div>
+    </nav>
+
     <div id="login-container">
-        <h2>Staff Login</h2>
+        <h2>Admin Login</h2>
 
         <?php
+        //database connection file
         include 'dbconnection.php';
 
         // this checks if the form is submitted
@@ -28,23 +39,23 @@ session_start();
 
 
             // query to check user credentials
-            $queryStaff = "SELECT * FROM login_data WHERE email = :email AND password = :password";
+            $queryAdmin = "SELECT * FROM login_data WHERE email = :email AND password = :password";
 
-            $stmtStaff = $con->prepare($queryStaff);
-            $stmtStaff->bindParam(':email', $inputEmail);
-            $stmtStaff->bindParam(':password', $inputPassword);
-            $stmtStaff->execute();
+            $stmtAdmin = $con->prepare($queryAdmin);
+            $stmtAdmin->bindParam(':email', $inputEmail);
+            $stmtAdmin->bindParam(':password', $inputPassword);
+            $stmtAdmin->execute();
 
-            // Check if data found
-            if ($stmtStaff->rowCount() > 0) 
+            // check if data found
+            if ($stmtAdmin->rowCount() > 0) 
             {
-                $user = $stmtStaff->fetch(PDO::FETCH_ASSOC);
+                $user = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 
-                // Store user information in the session
-                $_SESSION['staffID'] = $user['staffID']; // Adjust the key and value according to your database structure
+                // store user information in the session
+                $_SESSION['staffID'] = $user['staffID'];
                 $_SESSION['role'] = $user['role'];
 
-                // Redirect to the appropriate page based on the role
+                // redirect to the adminpage
                 if ($_SESSION['role'] == "Admin") 
                     {
                     header("Location: adminpage.php");
@@ -52,6 +63,7 @@ session_start();
                     }
             }
             
+            // error message if incorrect login info entered
             else
             {
                 echo "<p style='color: red;'>Invalid username or password.</p>";
@@ -60,10 +72,11 @@ session_start();
 
         ?>
 
+        <!-- this is the form which is used to get email and password input from the user -->
         <form method="post" action="">
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+            <button type="submit" class ="login-button">Login</button>
         </form>
     </div>
 </body>
