@@ -1,50 +1,77 @@
+/* body of the entire page */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
 
-nav {
+/* navigation bar at the top of the page */
+.navbar {
     background-color: #ec0000;
     overflow: hidden;
 }
 
-.tab {
+/* for buttons inside navigation bar */
+.nav-buttons {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    margin-left: auto;
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    max-width: 800px;
-    width: 100%;
-}
-
-.tablinks {
+/* logout button style, which is inside navigation bar */
+.logout-button {
     background-color: #ec0000;
-    color: #fff;
+    color: white;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    float: right;
 }
 
-.tablinks:hover {
-    background-color: #ff3333;
+/* hover for return button */
+.logout-button:hover {
+    background-color: #ec0000;
 }
 
-.tabcontent {
-    display: none;
-    padding: 20px;
+/* this is the form for user inputs */
+.form-container {
     text-align: center;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-#branchEditor {
-    background-color: #f4f4f4;
+/* form inputs and buttons */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Add margin for better spacing */
 }
 
-#ATMManagement {
-    background-color: #f4f4f4;
+/* this is the interactive map on the page*/
+#map {
+    height: 337px;
+    width: 525px;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+/* this is the table used to store fetched data*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/*table styling of cells*/
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+/*table styling of cells*/
+th {
+    background-color: #f2f2f2; /* Add a background color to header cells */
+}
+
