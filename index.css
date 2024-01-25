@@ -19,7 +19,7 @@
 
 
 body {
-    padding-top: 60px; /* Adjust based on your navbar height */
+    padding-top: 60px;
 }
 
 .navbar1 {
@@ -28,17 +28,12 @@ body {
 
 #map {
     height: 500px; /* Set the map container height */
-    margin-top: 20px; /* Adjust margin top for spacing */
+    margin-top: 20px;
 }
 
 .search-container {
     text-align: center;
     margin-top: 20px;
-}
-
-#search-input {
-    width: 80%;
-    max-width: 400px;
 }
 
 .center {
@@ -50,13 +45,15 @@ body {
   #content
   {
     background:#f9f9f9;
+    border-left: 1px solid #e9eaea;
+    border-right:1px solid #e9eaea;
+    padding: 30px!important;
   }
 
 .containers {
     display: grid;
-    grid-gap: 10px; /* Adjust the grid gap as needed */
-    max-width: 4000px; /* Adjust the max-width as needed */
-    margin: auto; /* Center the container */
+    grid-gap: 10px;
+    margin: auto;
 }
 
 
