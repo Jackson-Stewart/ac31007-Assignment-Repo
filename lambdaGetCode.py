@@ -2,6 +2,20 @@ import json
 import mysql.connector 
 
 def lambda_handler(event, context):
+    
+    if event['httpMethod'] == 'OPTIONS':
+        response = {
+            'statusCode': 200,
+            'headers': {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Credentials': True,
+            },
+            'body': '',
+        }
+        return response
+    
     requestData = event['queryStringParameters']
     lat = requestData['lat']
     long = requestData['long']
@@ -36,5 +50,9 @@ def lambda_handler(event, context):
         cnx.close()
     return {
         'statusCode': 200,
-        'body': json.dumps(str(returnData))
+        'headers': {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        },
+        'body': json.dumps(returnData)
     }
