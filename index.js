@@ -61,7 +61,31 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude) {
     console.error('Error fetching data:', error);
   }
 }
+function performSearch() {
+  const searchInput = document.getElementById('search-input').value;
+  const useCurrentLocationCheckbox = document.getElementById('use-current-location');
 
+  if (!useCurrentLocationCheckbox.checked) {
+    // Only perform search if "Use Current Location" is not checked
+    // Using a geocoding service, Nominatim to get the coordinates
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const result = data[0];
+          const lat = parseFloat(result.lat);
+          const lon = parseFloat(result.lon);
+
+          const apiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/production/transactions?lat=${lat}&long=${lon}&radius=10&table=branches`;
+
+          fetchData(apiUrl, lat, lon);
+        } else {
+          alert('Location not found');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+}
 function geoFindMe() {
   const status = document.querySelector("#status");
   const mapLink = document.querySelector("#map-link");
