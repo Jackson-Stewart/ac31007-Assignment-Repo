@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-async function fetchData(apiUrl, presetLatitude, presetLongitude) {
+async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -19,7 +19,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude) {
       map.remove();
     }
 
-    map = L.map("map").setView([presetLatitude, presetLongitude], 10);
+    map = L.map("map").setView([presetLatitude, presetLongitude], 13);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
@@ -56,6 +56,14 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude) {
     if (!firstLocation) {
       displayBranchDetails(apiUrl, 0);
     }
+
+      // Determines if geo locations is used, if so create pin at user location
+      if (geoUsed)
+    {
+      userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
+      userLocationMarker.bindPopup('You are here');
+    }
+    
 
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -104,7 +112,7 @@ function geoFindMe() {
 
     const apiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/production/transactions?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
 
-    fetchData(apiUrl, latitude, longitude);
+    fetchData(apiUrl, latitude, longitude, true);
   }
 
   function usePresetLocation() {
