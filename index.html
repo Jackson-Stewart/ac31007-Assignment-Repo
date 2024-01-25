@@ -31,7 +31,7 @@
               <a class="nav-link text-white" href="#">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="stafflogin.php">Login</a>
+              <a class="nav-link text-white" href="login.php">Login</a>
             </li>
           </ul>
         </div>
@@ -50,6 +50,7 @@
               <form class="form-inline my-2 my-lg-0 center">
                 <div class="containers">
                   <div class="row">
+                    <div class="col">
                     <input
                       id="search-input"
                       class="form-control mr-sm-2"
@@ -57,14 +58,15 @@
                       placeholder="Please enter a postcode, town, or address"
                       aria-label="Search"
                     />
-                  </div>
-                  <div class="row">
+                    </div>
+                    <div class="col">
                     <button
                       class="btn btn-outline-danger my-2 my-sm-0"
                       type="submit"
                     >
                       Search
                     </button>
+                  </div>
                   </div>
                   <div class="row">
                     <label for="use-current-location">Use Current Location</label>
@@ -86,25 +88,12 @@
               <div id="map"></div>
             </div>
           </div>
-
+          <!--Probably not needed 3-->
           <div class="sliders">
-            <div class="words">Wheelchair Accesible</div>
-              <div class="words">
-                <label class="switch">
-                <input type="checkbox" />
-                <span class="slider round"></span>
-                </label>
-              </div>
 
-              <div class="words">AudioCash Machine</div>
-              <div class="words">
 
-                <label class="switch"> 
-                    <!-- checked -->
-                  <input type="checkbox"  />
-                  <span class="slider round"></span>
-                </label>
-              </div>
+
+
           </div>
 
         <div>
@@ -113,7 +102,26 @@
           <a id="map-link" target="_blank"></a>
         </div>
 
-      <div class="services">
+
+        <div class="services">
+
+          <div class="words"><p>Wheelchair Accesible</p>
+            <label class="switch">
+            <input type="checkbox" />
+            <span class="slider round"></span>
+            </label>
+          </div>
+
+          
+          <div class="words"><p>AudioCash Machine</p>
+
+            <label class="switch"> 
+                <!-- checked -->
+              <input type="checkbox"  />
+              <span class="slider round"></span>
+            </label>
+          </div>
+
           <div class="words"><p>Cash Withdrawal</p> 
             <label class="switch"> 
               <!-- checked -->
@@ -130,43 +138,40 @@
             </label>
           </div>
 
-            <div class="words"><p>Cash Deposits</p> 
-              <label class="switch"> 
-                <!-- checked -->
-                <input type="checkbox"  />
-                <span class="slider round"></span>
-              </label>
-            </div>
+          <div class="words"><p>Cash Deposits</p> 
+            <label class="switch"> 
+              <!-- checked -->
+              <input type="checkbox"  />
+              <span class="slider round"></span>
+            </label>
+          </div>
 
-            <div class="words"> <p>Cheque Deposits</p>
-              <label class="switch"> 
-                <!-- checked -->
-                <input type="checkbox"  />
-                <span class="slider round"></span>
-              </label>
-            </div>
+          <div class="words"> <p>Cheque Deposits</p>
+            <label class="switch"> 
+              <!-- checked -->
+              <input type="checkbox"  />
+              <span class="slider round"></span>
+            </label>
+          </div>
 
-            <div class="words"><p>Balance</p> 
-              <label class="switch"> 
-                <!-- checked -->
-                <input type="checkbox"  />
-                <span class="slider round"></span>
-              </label>
-            </div>
-      </div> 
-
-      </div>
-
-      <div class="slideContainer">
+          <div class="words"><p>Balance</p> 
+            <label class="switch"> 
+              <!-- checked -->
+              <input type="checkbox"  />
+              <span class="slider round"></span>
+            </label>
+          </div>
 
 
+
+        </div> 
 
       </div>
+
     </section>
 
     <!--Bootstrap example used for footer-->
-    <div class="container">
-      <footer class="py-3 my-4">
+      <footer class="py-3">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
           <li class="nav-item">
             <a href="#" class="nav-link px-2 text-muted">Home</a>
@@ -183,7 +188,7 @@
         </ul>
         <p class="text-center text-muted">© 2024 ATM Finder</p>
       </footer>
-    </div>
+
 
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

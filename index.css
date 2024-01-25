@@ -1,12 +1,10 @@
 #map {
-    height: 675px;
-    width: 1050px;
     margin-left: auto;
     margin-right: auto;
 }
 
 #main {
-    background:#f9f9f9;
+    background:white;
 }
 
 #nav 
@@ -21,7 +19,7 @@
 
 
 body {
-    padding-top: 56px; /* Adjust based on your navbar height */
+    padding-top: 60px; /* Adjust based on your navbar height */
 }
 
 .navbar1 {
@@ -51,16 +49,16 @@ body {
 
   #content
   {
-    height:relative;
+    background:#f9f9f9;
   }
 
 .containers {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
-    grid-gap: -10px;
-    width: 100rem;
+    grid-gap: 10px; /* Adjust the grid gap as needed */
+    max-width: 4000px; /* Adjust the max-width as needed */
+    margin: auto; /* Center the container */
 }
+
 
 .switch {
     position: relative;
@@ -113,6 +111,26 @@ input:checked+.slider:before {
     transform: translateX(26px);
 }
 
+/*Makes toggle go on new row when out of space*/
+.services
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+  /*Lines up 3 toggles in a row*/
+.words
+{
+    width: 30%;
+    margin-bottom: 10px;
+}
+/* Shadow for footer */
+footer
+{
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); 
+}
+
 .slideContainer{
     display: grid;
     grid-template-columns:13rem 10rem ;
@@ -124,11 +142,6 @@ input:checked+.slider:before {
     margin-top: -150px;
 }
 
-.services{
-    display: grid;
-        grid-template-columns: 13rem 13rem;
-        grid-gap: 1rem;
-}
 
 @media screen and (max-width:800px) {
 
