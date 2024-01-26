@@ -84,7 +84,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
 
-          const apiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/production/transactions?lat=${lat}&long=${lon}&radius=10&table=branches`;
+          const apiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=10&table=branches`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -110,7 +110,7 @@ function geoFindMe() {
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
-    const apiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/production/transactions?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
+    const apiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
 
     fetchData(apiUrl, latitude, longitude, true);
   }
@@ -118,7 +118,7 @@ function geoFindMe() {
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
+    const presetApiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -167,8 +167,7 @@ function displayBranchDetails(apiUrl, index) {
         <p>Friday: ${branch.opening_hours_friday}</p>
         <p>Saturday: ${branch.opening_hours_saturday}</p>
         <p>Sunday: ${branch.opening_hours_sunday}</p>
-        <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
-      `;
+      `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
     })
     .catch(error => console.error('Error fetching data:', error));
 }

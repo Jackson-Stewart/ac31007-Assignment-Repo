@@ -128,45 +128,59 @@ footer
     box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); 
 }
 
-.slideContainer{
-    display: grid;
-    grid-template-columns:13rem 10rem ;
-    grid-gap: 10rem;
-    justify-content: flex-center;
-    
-    /* align-items: center; */
-    margin-left: 19rem;
-    margin-top: -150px;
-}
-
-
-@media screen and (max-width:800px) {
-
-    #map {
-        height: 25rem;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 100px;
+/* Used to adjust the format of the website based on screen size*/
+@media screen and (max-width: 800px) {
+    .search-container {
+        text-align: center;
+        margin-top: 20px;
     }
-
+ 
     .containers {
         display: grid;
-        grid-template-columns: auto auto;
-        grid-template-rows: auto auto;
-        grid-gap: 1rem;
-        width: 20rem;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+        margin: auto;
+        width: 80%;
     }
-
-    .search-container {
-
-        top: 5px;
-
-        transform: translateY(85px);
+ 
+    #search-input {
+        margin-bottom: 10px;
     }
-
-
+ 
+    #use-current-location {
+        margin-top: 10px;
+    }
 }
+
+/* Used to adjust the format of the website based on screen size*/
+@media screen and (max-width: 600px) {
+    .search-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+ 
+    .containers {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+        margin: auto;
+        width: 60%;
+    }
+ 
+    #search-input {
+        margin-bottom: 10px;
+    }
+ 
+    #use-current-location {
+        margin-top: 10px;
+    }
+}
+
+.form-check-input
+{
+    margin-left: 5px !important;
+}
+
 
 .slider.round {
     border-radius: 34px;
@@ -176,27 +190,17 @@ footer
     border-radius: 50%;
 }
 
-@media screen and (max-width:1280px) {
-    #map {
-        height: 25rem;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 100px;
-    }
 
-    .containers {
-        display: grid;
-        grid-template-columns: auto auto;
-        grid-template-rows: auto auto;
-        grid-gap: 1rem;
-        width: 20rem;
-    }
-
-    .search-container {
-
-        top: 5px;
-
-        transform: translateY(85px);
-    }
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 25px;
+    position: relative;
+    background-color: transparent;
+}
+.navbar-toggler-icon .bar {
+    display: block;
+    width: 100%;
+    height: 0.2em;
+    margin: 0.25em 0;
+    background-color: #fff;
 }
