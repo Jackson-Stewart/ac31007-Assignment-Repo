@@ -78,7 +78,7 @@ let map;
 
         // either atm or branches is selected, updates api link to get the correct data
         const table = selectedAction === 'atm' ? 'atm' : 'branches';
-        const apiLink = `https://hhlvbz9p77.execute-api.us-east-1.amazonaws.com/testStage/transactions?lat=${latitude}&long=${longitude}&radius=10&table=${table}`;
+        const apiLink = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=${table}`;
 
         // attempts to fetch the data from the api, either returns data or displays error message
         try {
@@ -124,7 +124,7 @@ let map;
             </tr>
         </thead>
         <tbody>
-    `;
+    `; // thead is table head, tr is table row, th is table header(column names), tbody is table body
 
     // inserts data into the table columns
     data.forEach(branch => {
@@ -141,7 +141,7 @@ let map;
                 <td><button onclick="editRow(${branch.branch_id})">Edit</button></td>
                 <td><button onclick="editRow(${branch.branch_id})">Delete</button></td>
             </tr>
-        `;
+        `; //td is table data. button editing not implemented.
     });
 
     table.innerHTML += `</tbody>`;
@@ -167,9 +167,11 @@ let map;
         const marker = L.marker([parseFloat(branch.latitude), parseFloat(branch.longitude)]).addTo(map);
         marker.bindPopup(`
             <b>${branch.branch_name}</b><br>
-            Opening Hours: ${branch.opening_hours}<br>
-            Contact: ${branch.contact_phone}
-        `);
+            Street: ${branch.street_name}<br>
+            Contact: ${branch.contact_phone}<br>
+            Post Code: ${branch.post_code}<br>
+            ID: ${branch.branch_identification}
+        `); //this is currently setup for branches only, for ATMs this will need to be reworked
         markers.push(marker)
     });
 
