@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchData(latitude, longitude, geoUsed, table, radius) { //lat and long to search from, bool for geoused, table(atm or branch), radius(miles)
     //fetching data from api
     try {
-      const response = await fetch(`https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${radius}&table=${table}`);
+      const response = await fetch(`https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${radius}&table=${table}`);
       const data = await response.json();
         
       //resetting the map
@@ -130,7 +130,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
 
-          const apiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=10&table=branches`;
+          const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=10&table=branches`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -147,11 +147,12 @@ function geoFindMe() {
   const mapLink = document.querySelector("#map-link");
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
 
+
   mapLink.href = "";
   mapLink.textContent = "";
 
-  
   function success(position) {
+    //assigning values received from geoloaction allowance
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
@@ -159,15 +160,17 @@ function geoFindMe() {
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
-    const apiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
+    //setting the current co-ordinates within the url
+    const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
 
     fetchData(apiUrl, latitude, longitude, true);
   }
 
+  //preset location if geolocation is blocked
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
+    const presetApiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -176,16 +179,20 @@ function geoFindMe() {
     }
   }
 
+  //geolocation validation 
   function error() {
     status.textContent = "Unable to retrieve your location";
     
+    //setting the status of checkbox
     useCurrentLocationCheckbox.checked = false;
 
     if (useCurrentLocationCheckbox.checked) {
+    //use preset location if unchecked
       usePresetLocation();
     }
   }
 
+  //further geolocation error handling and validation
   if (!navigator.geolocation) {
     status.textContent = "Geolocation is not supported by your browser";
     usePresetLocation();
@@ -206,6 +213,7 @@ function displayBranchDetails(apiUrl, index) {
     .then(response => response.json())
     .then(data => {
       const branch = data[index];
+      //setting and displaying the values of closest branch in html
       branchInfoDiv.innerHTML = `
         <h3>${branch.branch_name}</h3>
         <p><strong>Opening Hours:</strong></p>
