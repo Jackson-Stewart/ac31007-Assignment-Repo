@@ -204,3 +204,32 @@ footer
     margin: 0.25em 0;
     background-color: #fff;
 }
+
+
+.sliderContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* The radius label */
+#radiusLabel {
+    margin-left: 10px;
+}
+
+/* Styles for the slider */
+.slider {
+    width: 50%; /* Set the desired width for the slider */
+    margin-top: 20px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Adjustments for responsiveness */
+@media screen and (max-width: 768px) {
+    .slideContainer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

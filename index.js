@@ -1,4 +1,6 @@
 let map;
+let radiusSlider = document.getElementById("radiusSlider"); // Corrected variable name
+let radiusLabel = document.getElementById("radiusValue");
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -8,67 +10,111 @@ document.addEventListener("DOMContentLoaded", function () {
   useCurrentLocationCheckbox.addEventListener("change", function () {
     geoFindMe();
   });
+
+  // slider input listener
+  radiusSlider.addEventListener("input", function () {
+    // amending the display to match slider value
+    radiusLabel.textContent = radiusSlider.value + " km";
+
+    // Updating map view of branches based on new radius value
+    updateMapView();
+  });
 });
 
-async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed) {
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    if (map) {
-      map.remove();
-    }
-
-    map = L.map("map").setView([presetLatitude, presetLongitude], 13);
-
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
-
-    var locations = data.map(branch => ({
-      lat: parseFloat(branch.latitude),
-      lng: parseFloat(branch.longitude),
-      name: branch.branch_name,
-      openingHoursMonday: branch.opening_hours_monday,
-      openingHoursTuesday: branch.opening_hours_tuesday,
-      openingHoursWednesday: branch.opening_hours_wednesday,
-      openingHoursThursday: branch.opening_hours_thursday,
-      openingHoursFriday: branch.opening_hours_friday,
-      openingHoursSaturday: branch.opening_hours_saturday,
-      openingHoursSunday: branch.opening_hours_sunday,
-      accessibility: branch.accessibility
-    }));
-
-    locations.forEach(function (location) {
-      var marker = L.marker([location.lat, location.lng]).addTo(map);
-      marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: ' 
-                        + '</b><br>Monday: ' + location.openingHoursMonday
-                        + '</b><br>Tuesday: ' + location.openingHoursTuesday 
-                        + '</b><br>Wednesday: ' + location.openingHoursWednesday 
-                        + '</b><br>Thursday: ' + location.openingHoursThursday 
-                        + '</b><br>Friday: ' + location.openingHoursFriday 
-                        + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                        + '</b><br>Sunday: ' + location.openingHoursSunday);
-    });
-
-    const firstLocation = document.querySelector("#branch-info").dataset.location;
-    if (!firstLocation) {
-      displayBranchDetails(apiUrl, 0);
-    }
-
-      // Determines if geo locations is used, if so create pin at user location
+async function fetchData(latitude, longitude, geoUsed, table, radius) { //lat and long to search from, bool for geoused, table(atm or branch), radius(miles)
+    //fetching data from api
+    try {
+      const response = await fetch(`https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${radius}&table=${table}`);
+      const data = await response.json();
+        
+      //resetting the map
+      if (map) {
+        map.remove();
+      }
+      
+      //setting the mapview to preset values
+      map = L.map("map").setView([latitude, longitude], 13);
+  
+      //initialising first instance of the map
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+      
+      
+      if(table=="atm"){
+        //assigning variables to api data
+        var locations = data.map(atm => ({
+            lat: parseFloat(atm.latitude),
+            lng: parseFloat(atm.longitude),
+            name: atm.atm_idenfication,
+            supported_currencies: atm.supported_currencies,
+            supported_languages: atm.supported_languages,
+            accessibility: atm.accessibility
+          }));
+          
+          //creating a marker for each within set radius
+          locations.forEach(function (location) {
+            var marker = L.marker([location.lat, location.lng]).addTo(map);
+            marker.bindPopup('<b>' + atm.atm_idenfication + '</b><br>Useful Information: ' 
+                            + '</b><br>Supported Currencies ' + location.supported_currencies
+                            + '</b><br>Supported Languages ' + location.supported_languages
+                            + '</b><br>Acessibility: ' + location.accessibility);
+            });
+            
+            
+          const firstLocation = document.querySelector("#atm-info").dataset.location;
+          if (!firstLocation) {
+            displayBranchDetails(apiUrl, 0);
+          }
+      }
+      else{
+        //assigning variables to api data
+        var locations = data.map(branch => ({
+            lat: parseFloat(branch.latitude),
+            lng: parseFloat(branch.longitude),
+            name: branch.branch_name,
+            openingHoursMonday: branch.opening_hours_monday,
+            openingHoursTuesday: branch.opening_hours_tuesday,
+            openingHoursWednesday: branch.opening_hours_wednesday,
+            openingHoursThursday: branch.opening_hours_thursday,
+            openingHoursFriday: branch.opening_hours_friday,
+            openingHoursSaturday: branch.opening_hours_saturday,
+            openingHoursSunday: branch.opening_hours_sunday,
+            accessibility: branch.accessibility
+          }));
+      
+          locations.forEach(function (location) {
+            var marker = L.marker([location.lat, location.lng]).addTo(map);
+            marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: ' 
+                              + '</b><br>Monday: ' + location.openingHoursMonday
+                              + '</b><br>Tuesday: ' + location.openingHoursTuesday 
+                              + '</b><br>Wednesday: ' + location.openingHoursWednesday 
+                              + '</b><br>Thursday: ' + location.openingHoursThursday 
+                              + '</b><br>Friday: ' + location.openingHoursFriday 
+                              + '</b><br>Saturday: ' + location.openingHoursSaturday 
+                              + '</b><br>Sunday: ' + location.openingHoursSunday);
+          });
+      
+          const firstLocation = document.querySelector("#branch-info").dataset.location;
+          if (!firstLocation) {
+            displayBranchDetails(apiUrl, 0);
+          }
+      }
+  
+        // Determines if geo locations is used, if so create pin at user location
       if (geoUsed)
-    {
-      userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
-      userLocationMarker.bindPopup('You are here');
+      {
+        userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
+        userLocationMarker.bindPopup('You are here');
+      }
+      
+  
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
   }
-}
+ 
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
@@ -94,7 +140,9 @@ function performSearch() {
       .catch(error => console.error('Error:', error));
   }
 }
+
 function geoFindMe() {
+    //geolocation variables and checkbox
   const status = document.querySelector("#status");
   const mapLink = document.querySelector("#map-link");
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -102,6 +150,7 @@ function geoFindMe() {
   mapLink.href = "";
   mapLink.textContent = "";
 
+  
   function success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -171,3 +220,4 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
+
