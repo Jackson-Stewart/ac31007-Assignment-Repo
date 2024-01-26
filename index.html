@@ -6,18 +6,16 @@
   <title>ATM and Bank Branch Locator</title>
   <link rel="stylesheet" href="index.css" />
   <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+    rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/> <!--Boostrap css template-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/> <!--Open leaflet template-->
 </head>
 <body>
+
+  <!--Nav bar used at he top of each page-->
   <div class="navbar1 fixed-top">
     <nav class="navbar navbar-expand-lg bg-danger">
       <a class="navbar-brand text-white" href="#">ATM Locator</a>
+      <!--Mobile toggle icon-->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon">
           <span class="bar"></span>
@@ -25,7 +23,7 @@
           <span class="bar"></span>
         </span>
       </button>
-
+      <!---->>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
@@ -52,12 +50,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="row">
-                <div class="sliderContainer">
-                    <input type="range" min="1" max="100" value="10" class="slider" id="radiusSlider">
-                    <span id="radiusLabel">Radius: <span id="radiusValue">10</span> km</span>
-                </div>
-            </div>
+
           <div class="search-container">
             <form class="form-inline my-2 my-lg-0 center">
               <div class="containers">
@@ -73,6 +66,13 @@
                 <div class="row">
                   <label for="use-current-location">Use Current Location</label>
                   <input type="checkbox" id="use-current-location" class="form-check-input"/>
+                </div>
+
+                <div class="row">
+                  <div class="sliderContainer">
+                      <input type="range" min="1" max="100" value="10" class="sliderRadius" id="radiusSlider">
+                      <span id="radiusLabel">Radius: <span id="radiusValue">10</span> Miles</span>
+                  </div>
                 </div>
               </div>
             </form>
