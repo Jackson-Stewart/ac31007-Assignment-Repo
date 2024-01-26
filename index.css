@@ -1,15 +1,14 @@
+/* interactive map which is displayed on the website */
 #map {
     margin-left: auto;
     margin-right: auto;
+    height: 500px;
+    margin-top: 20px;
 }
 
+/* main content of the page */
 #main {
     background:white;
-}
-
-#nav 
-{
-    color:#FF0000;
 }
 
 /*Santander colours change */
@@ -17,31 +16,30 @@
     background-color: #ec0000!important;
 }
 
-
+/* body of the entire page */
 body {
     padding-top: 60px;
 }
 
+/* this is the navbar at the top of the page*/
 .navbar1 {
-    margin-bottom: 20px; /* Add space between the navbar and the content */
+    margin-bottom: 20px; 
 }
 
-#map {
-    height: 500px; /* Set the map container height */
-    margin-top: 20px;
-}
-
+/* this is the search container area which holds the form and the button */
 .search-container {
     text-align: center;
     margin-top: 20px;
 }
 
+/* centers content to the middle of the page */
 .center {
     margin: auto;
     width: 50%;
     text-align:center;
   }
 
+/* this is the content of the page */
   #content
   {
     background:#f9f9f9;
@@ -50,13 +48,14 @@ body {
     padding: 30px!important;
   }
 
+/* elements inside this are set as a grid with a gab */
 .containers {
     display: grid;
     grid-gap: 10px;
     margin: auto;
 }
 
-
+/* styles for the toggle switch on the website */
 .switch {
     position: relative;
     display: inline-block;
@@ -64,12 +63,14 @@ body {
     height: 34px;
 }
 
+/* this hides the actual checkbox input for the toggle switch */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
+/* styles for the slider part of the toggle switch */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -82,6 +83,7 @@ body {
     transition: .4s;
 }
 
+/* this is the style for the toggle switch knob */
 .slider:before {
     position: absolute;
     content: "";
@@ -94,21 +96,19 @@ body {
     transition: .4s;
 }
 
+/* this is the style for the slider once it is on */
 input:checked+.slider {
     background-color: red;
 }
 
-input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
+/* this slides the knob once it is pressed */
 input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
 
-/*Makes toggle go on new row when out of space*/
+/*this makes toggle go on new row when out of space*/
 .services
 {
     display: flex;
@@ -116,12 +116,13 @@ input:checked+.slider:before {
     justify-content: space-between;
 }
 
-  /*Lines up 3 toggles in a row*/
+/*Lines up 3 toggles in a row*/
 .words
 {
     width: 30%;
     margin-bottom: 10px;
 }
+
 /* Shadow for footer */
 footer
 {
@@ -176,27 +177,31 @@ footer
     }
 }
 
+/* this adds margin-left 5px to the elements inside */
 .form-check-input
 {
     margin-left: 5px !important;
 }
 
-
+/* this makes the slider rounded */
 .slider.round {
     border-radius: 34px;
 }
 
+/* this makes the knob appear circular */
 .slider.round:before {
     border-radius: 50%;
 }
 
-
+/* this is the icon which appears when the website size becomes smaller */
 .navbar-toggler-icon {
     display: inline-block;
     width: 25px;
     position: relative;
     background-color: transparent;
 }
+
+/* this is style for the bars which appears in the navbar icon when website size becomes smaller */
 .navbar-toggler-icon .bar {
     display: block;
     width: 100%;
@@ -205,11 +210,7 @@ footer
     background-color: #fff;
 }
 
-
-/* Radius slider style */
+/* radius slider style */
 .sliderRadius {
     margin-top: 20px;
-
 }
-
-
