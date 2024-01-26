@@ -198,4 +198,3 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
-
