@@ -22,11 +22,14 @@ def lambda_handler(event, context): #deault handler for lambda function
         #Uses Haversine formula to find distance between 2 coordinates
         #source: https://stackoverflow.com/questions/27708490/haversine-formula-definition-for-sql
         query = """
-        SELECT {Nfields}, ( 3959 * acos( cos( radians({Nlatitude}) ) * cos( radians( latitude) ) 
-        * cos( radians( longitude ) - radians({Nlongitude}) ) + sin( radians({Nlatitude}) ) * sin(radians(latitude)) ) ) AS distance 
-        FROM {Ntable}_data 
-        HAVING distance < {Ndistance}
-        ORDER BY distance ;
+            SELECT {Nfields}
+            FROM 
+                {Ntable}_data
+            WHERE 
+                ST_Distance_Sphere(
+                    geolocation, 
+                    ST_GeomFromText('POINT({Nlongitude} {Nlatitude})')
+                ) <= {Ndistance};
         """.format(Nfields = fields, Nlatitude = lat, Nlongitude = long, Ndistance = radius, Ntable = table)
         cursor.execute(query)
         result = cursor.fetchall()  #result stores all the values
