@@ -46,26 +46,23 @@
   <section id="main">
     <div id="content" class="container">
 
-      <div class="row">
-        <div id="branch-details" class="col-md-4">
-          <h2>Nearest Branch Details</h2>
-          <div id="branch-info"></div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="search-container">
-            <form class="form-inline my-2 my-lg-0 center">
-              <div class="containers">
-
-                <!--Search bar row-->
-                <div class="row">
-                  <div class="col">
+ <!--Search bar row-->
+        <div class="row">
+                <div class="col">
                     <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Please enter a town or city or postcode" aria-label="Search"/>
                   </div>
                   <div class="col">
                     <button id="search-button" class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="performSearch()">Search</button>
                   </div>
                 </div>
+
+                     <div class="col-md-12">
+          <div class="search-container">
+            <form class="form-inline my-2 my-lg-0 center">
+              <div class="containers">
+
+               
+              
 
                 <!--Current Location checkbox-->
                 <div class="row">
@@ -84,21 +81,13 @@
             </form>
           </div>
         </div>
-      </div>
-
-      <!--Map Display-->
       <div class="row">
-        <div class="col-md-12">
-          <div id="map"></div>
-          <a id="map-link" target="_blank"></a>
-        </div>
-      </div>
+        
+        <div id="branch-details" class="col-md-4">
+          <h2>Nearest Branch Details</h2>
+          <div id="branch-info"></div>
+        </div> 
 
-      <!-- Testing-->
-      <div>
-        <button id="find-me">Show my location</button><br />
-        <p id="status"></p>
-      </div>
 
       <!--Filters and services for the map-->
       <div class="services">
@@ -144,6 +133,24 @@
         </div>
 
       </div> 
+
+   
+      </div>
+
+      <!--Map Display-->
+      <div class="row">
+        <div class="col-md-12">
+          <div id="map"></div>
+          <a id="map-link" target="_blank"></a>
+        </div>
+      </div>
+
+      <!-- Testing-->
+      <div>
+        <button id="find-me">Show my location</button><br />
+        <p id="status"></p>
+      </div>
+
 
     </div>
   </section>
