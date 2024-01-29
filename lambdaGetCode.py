@@ -8,9 +8,10 @@ def lambda_handler(event, context): #deault handler for lambda function
     long = requestData['long']
     radius = requestData['radius']  #radius to search (miles)
     table = requestData['table']    #selects either "atm" or "branches" table
+    
     cnx = mysql.connector.connect(user='admin', password='Group3MasterPassword!',   #db login
-                              host='bankdatabase.ct2cs466y605.us-east-1.rds.amazonaws.com',
-                              database='BankDatabase')
+                          host='bankdatabase.ct2cs466y605.us-east-1.rds.amazonaws.com',
+                          database='BankDatabase')
     
     atmFields = "atm_identification, brand_name, supported_languages, atm_services, accessibility, access_24_hours, supported_currencies, minimum_amount, note, other_accessibility_code, other_accessibility_name, other_accessibility_description, branch_identification, location_category, other_location_category_code, other_location_category_name, other_location_category_description, site_identification, site_name, street_name, town_name, country_subdivision, country, post_code, latitude, longitude"
     branchesFields = "branch_identification, brand_name, branch_name, branch_type, customer_segments, services_and_facilities, accessibility, opening_hours_monday, opening_hours_tuesday, opening_hours_wednesday, opening_hours_thursday, opening_hours_friday, opening_hours_saturday, opening_hours_sunday, contact_phone, street_name, town_name, country_subdivision, country, post_code, latitude, longitude"
