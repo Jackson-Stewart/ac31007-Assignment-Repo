@@ -77,6 +77,24 @@
       </div>
 
       <div class="row">
+        <div class="col">
+          <div class="dropdown">
+            <button class="btn btn-outline-danger dropdown-toggle" type="button" id="branchOrAtmDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select Location Type
+            </button>
+            <div class="dropdown-menu" aria-labelledby="branchOrAtmDropdown">
+              <label class="dropdown-item">
+                <input type="checkbox" id="locationType" value="branches" onclick="updateLocationType(this)"> Branches
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="locationType" value="atm" onclick="updateLocationType(this)"> ATMs
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div id="branch-details" class="col-md-4">
           <h2>Nearest Branch Details</h2>
           <div id="branch-info"></div>
