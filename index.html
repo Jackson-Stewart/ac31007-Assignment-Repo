@@ -47,6 +47,36 @@
     <div id="content" class="container">
 
       <div class="row">
+        <div class="col">
+          <div class="dropdown">
+            <button class="btn btn-outline-danger dropdown-toggle" type="button" id="radiusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Radius
+            </button>
+            <div class="dropdown-menu" aria-labelledby="radiusDropdown">
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="1" onclick="updateRadius(this)"> 1 mile
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="2" onclick="updateRadius(this)"> 2 miles
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="5" onclick="updateRadius(this)"> 5 miles
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="10" onclick="updateRadius(this)"> 10 miles
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="25" onclick="updateRadius(this)"> 25 miles
+              </label>
+              <label class="dropdown-item">
+                <input type="checkbox" id="radiusChoice" value="50" onclick="updateRadius(this)"> 50 miles
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
         <div id="branch-details" class="col-md-4">
           <h2>Nearest Branch Details</h2>
           <div id="branch-info"></div>
