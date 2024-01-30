@@ -1,6 +1,4 @@
 let map;
-let radiusSlider = document.getElementById("radiusSlider"); // Corrected variable name
-let radiusLabel = document.getElementById("radiusValue");
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -11,14 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     geoFindMe();
   });
 
-  // slider input listener
-  radiusSlider.addEventListener("input", function () {
-    // amending the display to match slider value
-    radiusLabel.textContent = radiusSlider.value + " km";
-
-    // Updating map view of branches based on new radius value
-    updateMapView();
-  });
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
