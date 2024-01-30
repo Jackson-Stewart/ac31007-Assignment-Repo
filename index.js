@@ -1,5 +1,6 @@
 let map;
 chosenRadius = 10000;
+let locationType = "branches";
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   useCurrentLocationCheckbox.addEventListener("change", function () {
     geoFindMe();
   });
-
+  updateMapView;
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
@@ -28,10 +29,10 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
 
     //initialising the map
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
+    apiUrl = `${apiUrl}&table=${locationType}`;
     
     var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
@@ -69,6 +70,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     if (geoUsed) {
       userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
       userLocationMarker.bindPopup('You are here');
+      updateMapView;
     }
 
   } catch (error) {
@@ -91,7 +93,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
 
-          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=branches`;
+          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -122,7 +124,7 @@ function geoFindMe() {
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
     //setting the current co-ordinates within the url
-    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=branches`;
+    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
 
     fetchData(apiUrl, latitude, longitude, true);
   }
@@ -131,7 +133,7 @@ function geoFindMe() {
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=branches`;
+    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -190,6 +192,45 @@ function displayBranchDetails(apiUrl, index) {
     .catch(error => console.error('Error fetching data:', error));
 }
 
+function updateMapView() {
+  const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
+
+  if (!useCurrentLocationCheckbox.checked) {
+    const searchInput = document.getElementById('search-input').value;
+
+    if (searchInput.trim() !== '') {
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const result = data[0];
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+
+            const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+
+            fetchData(apiUrl, lat, lon, false);
+          } else {
+            alert('Location not found');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      geoFindMe();
+    }
+  }
+}
+
+function updateLocationType(checkbox) {
+  document.querySelectorAll('input[type="checkbox"]').forEach((cbLT) => {
+    if (cbLT !== checkbox && cbLT.id !== 'use-current-location' && cbLT.id !== 'radiusChoice') {
+      cbLT.checked = false;
+    }
+  });
+
+  locationType = checkbox.checked ? checkbox.value : null;
+}
+
 function updateRadius(checkbox) {
   document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
     if (cb !== checkbox && cb.id !== 'use-current-location' && cb.id !== 'locationType') {
@@ -198,6 +239,4 @@ function updateRadius(checkbox) {
   });
 
   chosenRadius = checkbox.checked ? parseInt(checkbox.value) : null;
-
-  updateMapView();
 }
