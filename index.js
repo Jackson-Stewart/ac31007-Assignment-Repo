@@ -1,4 +1,5 @@
 let map;
+chosenRadius = 10000;
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -90,7 +91,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
 
-          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=10000&table=branches`;
+          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=branches`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -121,7 +122,7 @@ function geoFindMe() {
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
     //setting the current co-ordinates within the url
-    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=10000&table=branches`;
+    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=branches`;
 
     fetchData(apiUrl, latitude, longitude, true);
   }
@@ -130,7 +131,7 @@ function geoFindMe() {
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=10000&table=branches`;
+    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=branches`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
