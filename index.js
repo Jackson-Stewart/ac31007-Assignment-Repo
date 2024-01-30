@@ -198,3 +198,15 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+function updateRadius(checkbox) {
+  document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    if (cb !== checkbox && cb.id !== 'use-current-location' && cb.id !== 'locationType') {
+      cb.checked = false;
+    }
+  });
+
+  chosenRadius = checkbox.checked ? parseInt(checkbox.value) : null;
+
+  updateMapView();
+}
