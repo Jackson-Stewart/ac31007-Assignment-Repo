@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateMapView;
 });
 
-async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
+async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusChoice) {
     //fetching data from api
   try {
     const response = await fetch(apiUrl);
@@ -32,7 +32,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    apiUrl = `${apiUrl}&table=${locationType}`;
+    apiUrl = `${apiUrl}`;
     
     var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
