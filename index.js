@@ -195,6 +195,31 @@ function displayBranchDetails(apiUrl, index) {
 function updateMapView() {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
 
+  if (useCurrentLocationCheckbox.checked) {
+    const searchInput = document.getElementById('search-input').value;
+
+    if (searchInput.trim() !== '') {
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const result = data[0];
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+
+            const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+
+            fetchData(apiUrl, lat, lon, false);
+          } else {
+            alert('Location not found');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      geoFindMe();
+    }
+  }
+
   if (!useCurrentLocationCheckbox.checked) {
     const searchInput = document.getElementById('search-input').value;
 
