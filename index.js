@@ -229,6 +229,8 @@ function updateLocationType(checkbox) {
   });
 
   locationType = checkbox.checked ? checkbox.value : null;
+
+  updateMapView();
 }
 
 function updateRadius(checkbox) {
@@ -239,4 +241,6 @@ function updateRadius(checkbox) {
   });
 
   chosenRadius = checkbox.checked ? parseInt(checkbox.value) : null;
+  
+  updateMapView();
 }
