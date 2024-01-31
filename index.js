@@ -1,7 +1,7 @@
 let map;
 chosenRadius = 10000;
 let locationType = "branches";
- 
+
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
 
@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
   useCurrentLocationCheckbox.addEventListener("change", function () {
     geoFindMe();
   });
-
   updateMapView();
 });
 
@@ -46,16 +45,22 @@ try {
     apiUrl = `${apiUrl}`;
 var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
-      lng: parseFloat(branch.longitude),
-      name: branch.branch_name,
-      openingHoursMonday: branch.opening_hours_monday,
-      openingHoursTuesday: branch.opening_hours_tuesday,
-      openingHoursWednesday: branch.opening_hours_wednesday,
-      openingHoursThursday: branch.opening_hours_thursday,
-      openingHoursFriday: branch.opening_hours_friday,
-      openingHoursSaturday: branch.opening_hours_saturday,
-      openingHoursSunday: branch.opening_hours_sunday,
-      accessibility: branch.accessibility
+        lng: parseFloat(branch.longitude),
+        name: branch.branch_name,
+        openingHoursMonday: branch.opening_hours_monday,
+        openingHoursTuesday: branch.opening_hours_tuesday,
+        openingHoursWednesday: branch.opening_hours_wednesday,
+        openingHoursThursday: branch.opening_hours_thursday,
+        openingHoursFriday: branch.opening_hours_friday,
+        openingHoursSaturday: branch.opening_hours_saturday,
+        openingHoursSunday: branch.opening_hours_sunday,
+        accessibility: branch.accessibility,
+        contactNumber: branch.contact_phone,
+        street: branch.street_name,
+        town: branch.town_name,
+        county: branch.country_subdivision,
+        country: branch.country,
+        postCode: branch.post_code
     }));
  
     //creating a marker for each within radius set
@@ -63,18 +68,29 @@ var locations = data.map(branch => ({
       var marker = L.marker([location.lat, location.lng]).addTo(map);
       marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
                         + '</b><br>Monday: ' + location.openingHoursMonday
-                        + '</b><br>Tuesday: ' + location.openingHoursTuesday
-                        + '</b><br>Wednesday: ' + location.openingHoursWednesday
-                        + '</b><br>Thursday: ' + location.openingHoursThursday
-                        + '</b><br>Friday: ' + location.openingHoursFriday
-                        + '</b><br>Saturday: ' + location.openingHoursSaturday
-                        + '</b><br>Sunday: ' + location.openingHoursSunday);
+                        + '</b><br>Tuesday: ' + location.openingHoursTuesday 
+                        + '</b><br>Wednesday: ' + location.openingHoursWednesday 
+                        + '</b><br>Thursday: ' + location.openingHoursThursday 
+                        + '</b><br>Friday: ' + location.openingHoursFriday 
+                        + '</b><br>Saturday: ' + location.openingHoursSaturday 
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br>Accessibility: ' + location.accessibility
+                          + '</b><br>Contact Number: ' + location.contactNumber 
+                          + '</b><br>Street: ' + location.street 
+                          + '</b><br>Town: ' + location.town 
+                          + '</b><br>County: ' + location.county 
+                          + '</b><br>Country: ' + location.country 
+                          + '</b><br>Post Code: ' + location.postCode
+                        + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.latitude +','+location.longitude + '" type="button" class="btn btn-danger text-white">Navigate</a>'
+                         // Adds Google maps to each marker
+                        );
     });
     const firstLocation = document.querySelector("#branch-info").dataset.location;
     if (!firstLocation) {
       displayBranchDetails(apiUrl, 0);
     }
- 
+  
     // Determines if geo locations are used, if so create a pin at the user's location
     if (geoUsed) {
       userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
@@ -83,8 +99,7 @@ var locations = data.map(branch => ({
     }
 // Display the list of nearest branches
     displayNearestBranchesList(data);
- 
- 
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -120,7 +135,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
           const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
- 
+
           fetchData(apiUrl, lat, lon);
         } else {
           alert('Location not found');
@@ -157,7 +172,9 @@ function geoFindMe() {
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
+
     const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
+
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
  
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -232,27 +249,33 @@ function displayBranchDetails(apiUrl, index) {
       const branch = data[index];
       //setting and displaying the values of closest branch in html
       branchInfoDiv.innerHTML = `
-        <h3>${branch.branch_name}</h3>
-        <p><strong>Opening Hours:</strong></p>
-        <p>Monday: ${branch.opening_hours_monday}</p>
-        <p>Tuesday: ${branch.opening_hours_tuesday}</p>
-        <p>Wednesday: ${branch.opening_hours_wednesday}</p>
-        <p>Thursday: ${branch.opening_hours_thursday}</p>
-        <p>Friday: ${branch.opening_hours_friday}</p>
-        <p>Saturday: ${branch.opening_hours_saturday}</p>
-        <p>Sunday: ${branch.opening_hours_sunday}</p>
+      <h3>${branch.branch_name}</h3>
+      <p><strong>Opening Hours:</strong></p>
+      <p>Monday: ${branch.opening_hours_monday}</p>
+      <p>Tuesday: ${branch.opening_hours_tuesday}</p>
+      <p>Wednesday: ${branch.opening_hours_wednesday}</p>
+      <p>Thursday: ${branch.opening_hours_thursday}</p>
+      <p>Friday: ${branch.opening_hours_friday}</p>
+      <p>Saturday: ${branch.opening_hours_saturday}</p>
+      <p>Sunday: ${branch.opening_hours_sunday}</p>
+      <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      <p>Contact Number: ${branch.contact_phone}</p>
+      <p>Street: ${branch.street_name}</p>
+      <p>Town: ${branch.town_name}</p>
+      <p>County: ${branch.country_subdivision}</p>
+      <p>Country: ${branch.country}</p>
+      <p>Post Code: ${branch.post_code}</p>
       `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
     })
     .catch(error => console.error('Error fetching data:', error));
 }
- 
- 
+
 function updateMapView() {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
  
   if (useCurrentLocationCheckbox.checked) {
     const searchInput = document.getElementById('search-input').value;
- 
+
     if (searchInput.trim() !== '') {
       fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
         .then(response => response.json())
@@ -261,9 +284,9 @@ function updateMapView() {
             const result = data[0];
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
- 
+
             const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
- 
+
             fetchData(apiUrl, lat, lon, false);
           } else {
             alert('Location not found');
@@ -274,10 +297,10 @@ function updateMapView() {
       geoFindMe();
     }
   }
- 
+
   if (!useCurrentLocationCheckbox.checked) {
     const searchInput = document.getElementById('search-input').value;
- 
+
     if (searchInput.trim() !== '') {
       fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
         .then(response => response.json())
@@ -286,9 +309,9 @@ function updateMapView() {
             const result = data[0];
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
- 
+
             const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
- 
+
             fetchData(apiUrl, lat, lon, false);
           } else {
             alert('Location not found');
@@ -300,28 +323,28 @@ function updateMapView() {
     }
   }
 }
- 
+
 function updateLocationType(checkbox) {
   document.querySelectorAll('input[type="checkbox"]').forEach((cbLT) => {
     if (cbLT !== checkbox && cbLT.id !== 'use-current-location' && cbLT.id !== 'radiusChoice') {
       cbLT.checked = false;
     }
   });
- 
+  
   locationType = checkbox.checked ? checkbox.value : null;
  
   updateMapView();
 }
- 
+
 function updateRadius(checkbox) {
   document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
     if (cb !== checkbox && cb.id !== 'use-current-location' && cb.id !== 'locationType') {
       cb.checked = false;
     }
   });
- 
+  
   chosenRadius = checkbox.checked ? parseInt(checkbox.value) : null;
- 
+
   updateMapView();
 }
 // Event listener for the filter button
@@ -354,3 +377,4 @@ function toggleFilterDropdown() {
     console.log("One or both elements not found.");
   }
 }
+
