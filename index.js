@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
-    //fetching data from api
+  //fetching data from api
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -40,7 +40,6 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    
     var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
       lng: parseFloat(branch.longitude),
@@ -68,17 +67,6 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Sunday: ' + location.openingHoursSunday);
     });
 
-    const firstLocation = document.querySelector("#branch-info").dataset.location;
-    if (!firstLocation) {
-      displayBranchDetails(apiUrl, 0);
-    }
-
-    // Determines if geo locations are used, if so create a pin at the user's location
-    if (geoUsed) {
-      userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
-      userLocationMarker.bindPopup('You are here');
-    }
-
     // Display the list of nearest branches
     displayNearestBranchesList(data);
 
@@ -91,17 +79,20 @@ function displayNearestBranchesList(data) {
   const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
 
   nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
-  data.forEach((branch, index) => {
-    if (index < 5) { // Displaying only the first 5 nearest branches
-      nearestBranchesListDiv.innerHTML += `
-        <p>${branch.branch_name}</p>
-        <p>Opening Hours: ${branch.opening_hours}</p>
-        <p>Accessibility: ${branch.accessibility}</p>
-        <hr>
-      `;
-    }
+  data.slice(0, 5).forEach(branch => {
+    nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
   });
 }
+
+function showBranchOnMap(branchName) {
+  const marker = map.getLayers().find(layer => layer.options.title === branchName);
+  if (marker) {
+    map.setView(marker.getLatLng(), 15);
+    marker.openPopup();
+  }
+}
+
+// Other functions remain unchanged
 
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
