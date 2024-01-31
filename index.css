@@ -11,7 +11,7 @@
     background:white;
 }
 
-/*Santander colours change */
+/* Santander colours change */
 .navbar.bg-danger {
     background-color: #ec0000!important;
 }
@@ -37,16 +37,15 @@ body {
     margin: auto;
     width: 50%;
     text-align:center;
-  }
+}
 
 /* this is the content of the page */
-  #content
-  {
+#content {
     background:#f9f9f9;
     border-left: 1px solid #e9eaea;
     border-right:1px solid #e9eaea;
     padding: 30px!important;
-  }
+}
 
 /* elements inside this are set as a grid with a gab */
 .containers {
@@ -108,28 +107,25 @@ input:checked+.slider:before {
     transform: translateX(26px);
 }
 
-/*this makes toggle go on new row when out of space*/
-.services
-{
+/* this makes toggle go on new row when out of space */
+.services {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
-/*Lines up 3 toggles in a row*/
-.words
-{
+/* Lines up 3 toggles in a row */
+.words {
     width: 30%;
     margin-bottom: 10px;
 }
 
 /* Shadow for footer */
-footer
-{
+footer {
     box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); 
 }
 
-/* Used to adjust the format of the website based on screen size*/
+/* Used to adjust the format of the website based on screen size */
 @media screen and (max-width: 800px) {
     .search-container {
         text-align: center;
@@ -153,7 +149,7 @@ footer
     }
 }
 
-/* Used to adjust the format of the website based on screen size*/
+/* Used to adjust the format of the website based on screen size */
 @media screen and (max-width: 600px) {
     .search-container {
         text-align: center;
@@ -178,8 +174,7 @@ footer
 }
 
 /* this adds margin-left 5px to the elements inside */
-.form-check-input
-{
+.form-check-input {
     margin-left: 5px !important;
 }
 
@@ -214,3 +209,52 @@ footer
 .sliderRadius {
     margin-top: 20px;
 }
+
+/* CSS for the filter button */
+.btn-outline-secondary {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* CSS for the "Show my location" button */
+#find-me {
+    background-color: green;
+    color: white;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    background-color: #dc3545; /* Red color */
+    border: none;
+    padding: 10px; /* Adjust padding as needed */
+    border-radius: 5px;
+    min-width: 500px; /* Adjust width as needed */
+
+}
+
+.services {
+    min-width: 400px;
+}
+
+
+/* Filter dropdown button */
+#filterDropdownButton {
+    background-color: #dc3545; /* Red color */
+}
+
+/* Styles for the filter options */
+.dropdown-menu .services {
+    padding: 10px; /* Reset padding for services */
+}
+
+.dropdown-menu .services .words {
+    margin-bottom: 10px; /* Adjust margin between options */
+    padding: 10px;
+}
+
+.dropdown-menu .services .words p {
+    margin-bottom: 5px; /* Adjust margin between text and toggle */
+}
+
+  
