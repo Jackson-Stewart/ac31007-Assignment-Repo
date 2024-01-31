@@ -35,16 +35,22 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     apiUrl = `${apiUrl}`;
     var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
-      lng: parseFloat(branch.longitude),
-      name: branch.branch_name,
-      openingHoursMonday: branch.opening_hours_monday,
-      openingHoursTuesday: branch.opening_hours_tuesday,
-      openingHoursWednesday: branch.opening_hours_wednesday,
-      openingHoursThursday: branch.opening_hours_thursday,
-      openingHoursFriday: branch.opening_hours_friday,
-      openingHoursSaturday: branch.opening_hours_saturday,
-      openingHoursSunday: branch.opening_hours_sunday,
-      accessibility: branch.accessibility
+        lng: parseFloat(branch.longitude),
+        name: branch.branch_name,
+        openingHoursMonday: branch.opening_hours_monday,
+        openingHoursTuesday: branch.opening_hours_tuesday,
+        openingHoursWednesday: branch.opening_hours_wednesday,
+        openingHoursThursday: branch.opening_hours_thursday,
+        openingHoursFriday: branch.opening_hours_friday,
+        openingHoursSaturday: branch.opening_hours_saturday,
+        openingHoursSunday: branch.opening_hours_sunday,
+        accessibility: branch.accessibility,
+        contactNumber: branch.contact_phone,
+        street: branch.street_name,
+        town: branch.town_name,
+        county: branch.country_subdivision,
+        country: branch.country,
+        postCode: branch.post_code
     }));
 
     //creating a marker for each within radius set
@@ -57,7 +63,15 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Thursday: ' + location.openingHoursThursday 
                         + '</b><br>Friday: ' + location.openingHoursFriday 
                         + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                        + '</b><br>Sunday: ' + location.openingHoursSunday);
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br>Accessibility: ' + location.accessibility
+                          + '</b><br>Contact Number: ' + location.contactNumber 
+                          + '</b><br>Street: ' + location.street 
+                          + '</b><br>Town: ' + location.town 
+                          + '</b><br>County: ' + location.county 
+                          + '</b><br>Country: ' + location.country 
+                          + '</b><br>Post Code: ' + location.postCode);
     });
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -197,15 +211,22 @@ function displayBranchDetails(apiUrl, index) {
       const branch = data[index];
       //setting and displaying the values of closest branch in html
       branchInfoDiv.innerHTML = `
-        <h3>${branch.branch_name}</h3>
-        <p><strong>Opening Hours:</strong></p>
-        <p>Monday: ${branch.opening_hours_monday}</p>
-        <p>Tuesday: ${branch.opening_hours_tuesday}</p>
-        <p>Wednesday: ${branch.opening_hours_wednesday}</p>
-        <p>Thursday: ${branch.opening_hours_thursday}</p>
-        <p>Friday: ${branch.opening_hours_friday}</p>
-        <p>Saturday: ${branch.opening_hours_saturday}</p>
-        <p>Sunday: ${branch.opening_hours_sunday}</p>
+      h3>${branch.branch_name}</h3>
+      <p><strong>Opening Hours:</strong></p>
+      <p>Monday: ${branch.opening_hours_monday}</p>
+      <p>Tuesday: ${branch.opening_hours_tuesday}</p>
+      <p>Wednesday: ${branch.opening_hours_wednesday}</p>
+      <p>Thursday: ${branch.opening_hours_thursday}</p>
+      <p>Friday: ${branch.opening_hours_friday}</p>
+      <p>Saturday: ${branch.opening_hours_saturday}</p>
+      <p>Sunday: ${branch.opening_hours_sunday}</p>
+      <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      <p>Contact Number: ${branch.contact_phone}</p>
+      <p>Street: ${branch.street_name}</p>
+      <p>Town: ${branch.town_name}</p>
+      <p>County: ${branch.country_subdivision}</p>
+      <p>Country: ${branch.country}</p>
+      <p>Post Code: ${branch.post_code}</p>
       `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
     })
     .catch(error => console.error('Error fetching data:', error));
