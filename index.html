@@ -41,73 +41,118 @@
   </nav>
 </div>
 
-<!-- Main center content -->
 <section id="main">
   <div id="content" class="container">
-
-    <!-- Search bar and button row -->
+ 
+    <!-- Search bar and buttons row -->
     <div class="row">
       <div class="col-md-6"> <!-- Adjusted width for the search bar -->
         <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Please enter a town or city or postcode" aria-label="Search"/>
       </div>
-      <div class="col">
+      <div class="col-md-6">
         <!-- Filter button with dropdown -->
-        <div class="dropdown">
-          <button class="btn btn-outline-secondary dropdown-toggle text-white" type="button" id="filterDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Filters
-          </button>
-          <div class="dropdown-menu"  id="filterDropdown" aria-labelledby="filterDropdownButton">
-            <div class="services">
-              <!-- Filter options -->
-              <!-- Wheelchair Accessible toggle -->
-              <div class="words">
-                <p>Wheelchair Accessible</p>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
-                </label>
+        <div class="row">
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle text-white" type="button" id="filterDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filters
+              </button>
+              <div class="dropdown-menu"  id="filterDropdown" aria-labelledby="filterDropdownButton">
+                <div class="services">
+                  <!-- Filter options -->
+                  <!-- Wheelchair Accessible toggle -->
+                  <div class="words">
+                    <p>Wheelchair Accessible</p>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <!-- AudioCash Machine toggle -->
+                  <div class="words">
+                    <p>AudioCash Machine</p>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <!-- Pin Change toggle -->
+                  <div class="words">
+                    <p>Pin Change</p>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <!-- Cash Deposits toggle -->
+                  <div class="words">
+                    <p>Cash Deposits</p>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <!-- Cheque Deposits toggle -->
+                  <div class="words">
+                    <p>Cheque Deposits</p>
+                    <label class="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
               </div>
-              <!-- AudioCash Machine toggle -->
-              <div class="words">
-                <p>AudioCash Machine</p>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="radiusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Radius
+              </button>
+              <div class="dropdown-menu" aria-labelledby="radiusDropdown">
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="1609.34" onclick="updateRadius(this)"> 1 mile
                 </label>
-              </div>
-              <!-- Pin Change toggle -->
-              <div class="words">
-                <p>Pin Change</p>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="3218.69" onclick="updateRadius(this)"> 2 miles
                 </label>
-              </div>
-              <!-- Cash Deposits toggle -->
-              <div class="words">
-                <p>Cash Deposits</p>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="8046.72" onclick="updateRadius(this)"> 5 miles
                 </label>
-              </div>
-              <!-- Cheque Deposits toggle -->
-              <div class="words">
-                <p>Cheque Deposits</p>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="16093.4" onclick="updateRadius(this)"> 10 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="40233.6" onclick="updateRadius(this)"> 25 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="80467.2" onclick="updateRadius(this)"> 50 miles
                 </label>
               </div>
             </div>
           </div>
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="branchOrAtmDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Location Type
+              </button>
+              <div class="dropdown-menu" aria-labelledby="branchOrAtmDropdown">
+                <label class="dropdown-item">
+                  <input type="checkbox" id="locationType" value="branches" onclick="updateLocationType(this)"> Branches
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="locationType" value="atm" onclick="updateLocationType(this)"> ATMs
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <button id="search-button" class="btn btn-outline-danger my-2 my-sm-0 float-left" type="button" onclick="performSearch()">Search</button>
+          </div>
         </div>
       </div>
-      <div class="col">
-        <button id="search-button" class="btn btn-outline-danger my-2 my-sm-0 float-left" type="button" onclick="performSearch()">Search</button>
-      </div>
     </div>
-            
+
     <!-- Current Location checkbox -->
     <div class="row mt-2">
       <div class="col">
@@ -115,19 +160,6 @@
         <input type="checkbox" id="use-current-location" class="form-check-input"/>
       </div>
     </div>
-
-    <!-- Radius Slider -->
-    <!-- Uncomment this section if you want to add a radius slider -->
-    <!--
-    <div class="row mt-2">
-      <div class="col">
-        <div class="sliderContainer">
-          <input type="range" min="1" max="100" value="10" class="sliderRadius" id="radiusSlider">
-          <span id="radiusLabel">Radius: <span id="radiusValue">10</span> Miles</span>
-        </div>
-      </div>
-    </div>
-    -->
 
     <!-- Map Display -->
     <div class="row mt-3">
@@ -187,3 +219,9 @@
 
 </body>
 </html>
+
+
+
+
+
+  
