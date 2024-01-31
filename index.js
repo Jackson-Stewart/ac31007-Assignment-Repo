@@ -51,7 +51,13 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       openingHoursFriday: branch.opening_hours_friday,
       openingHoursSaturday: branch.opening_hours_saturday,
       openingHoursSunday: branch.opening_hours_sunday,
-      accessibility: branch.accessibility
+      accessibility: branch.accessibility,
+      contactNumber: branch.contact_phone,
+      street: branch.street_name,
+      town: branch.town_name,
+      county: branch.country_subdivision,
+      country: branch.country,
+      postCode: branch.post_code
     }));
 
     //creating a marker for each within radius set
@@ -64,7 +70,14 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Thursday: ' + location.openingHoursThursday 
                         + '</b><br>Friday: ' + location.openingHoursFriday 
                         + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                        + '</b><br>Sunday: ' + location.openingHoursSunday);
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br>Accessibility: ' + location.accessibility
+                        + '</b><br>Contact Number: ' + location.contactNumber 
+                        + '</b><br>Street: ' + location.street 
+                        + '</b><br>Town: ' + location.town 
+                        + '</b><br>County: ' + location.county 
+                        + '</b><br>Country: ' + location.country 
+                        + '</b><br>Post Code: ' + location.postCode);
     });
 
     // Display the list of nearest branches
@@ -203,7 +216,14 @@ function displayBranchDetails(apiUrl, index) {
         <p>Friday: ${branch.opening_hours_friday}</p>
         <p>Saturday: ${branch.opening_hours_saturday}</p>
         <p>Sunday: ${branch.opening_hours_sunday}</p>
-      `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+        <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+        <p>Contact Number: ${branch.contact_phone}</p>
+        <p>Street: ${branch.street_name}</p>
+        <p>Town: ${branch.town_name}</p>
+        <p>County: ${branch.country_subdivision}</p>
+        <p>Country: ${branch.country}</p>
+        <p>Post Code: ${branch.post_code}</p>
+      `;
     })
     .catch(error => console.error('Error fetching data:', error));
 }
