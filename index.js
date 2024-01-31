@@ -37,7 +37,6 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
 
     //initialising the map
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
@@ -80,11 +79,30 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       userLocationMarker.bindPopup('You are here');
     }
 
+    // Display the list of nearest branches
+    displayNearestBranchesList(data);
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
- 
+
+function displayNearestBranchesList(data) {
+  const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
+
+  nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
+  data.forEach((branch, index) => {
+    if (index < 5) { // Displaying only the first 5 nearest branches
+      nearestBranchesListDiv.innerHTML += `
+        <p>${branch.branch_name}</p>
+        <p>Opening Hours: ${branch.opening_hours}</p>
+        <p>Accessibility: ${branch.accessibility}</p>
+        <hr>
+      `;
+    }
+  });
+}
+
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
@@ -100,7 +118,7 @@ function performSearch() {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
 
-          const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=10&table=branches`;
+          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=10000&table=branches`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -131,7 +149,7 @@ function geoFindMe() {
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
     //setting the current co-ordinates within the url
-    const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=branches`;
+    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=10000&table=branches`;
 
     fetchData(apiUrl, latitude, longitude, true);
   }
@@ -140,7 +158,7 @@ function geoFindMe() {
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=10&table=branches`;
+    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=10000&table=branches`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
@@ -198,3 +216,35 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+// Event listener for the filter button
+document.getElementById("filterDropdownButton").addEventListener("click", toggleFilterDropdown);
+
+// Prevent the dropdown from closing when clicking inside it or on the filter button
+document.addEventListener("click", function(event) {
+  var filterDropdown = document.getElementById("filterDropdown");
+  var filterButton = document.getElementById("filterDropdownButton");
+  console.log(event.target.tagName); // Log the clicked target's tag name
+  if (!filterDropdown.contains(event.target) && event.target !== filterButton && !event.target.classList.contains('switch') && event.target.tagName.toLowerCase() !== 'input') {
+    filterDropdown.style.display = "none";
+  }
+});
+
+function toggleFilterDropdown() {
+  var filterDropdown = document.getElementById("filterDropdown");
+  var filterDropdownButton = document.getElementById("filterDropdownButton");
+  
+  console.log("filterDropdown:", filterDropdown);
+  console.log("filterDropdownButton:", filterDropdownButton);
+
+  if (filterDropdown && filterDropdownButton) {
+    if (filterDropdown.style.display === "none" || filterDropdown.style.display === "") {
+      filterDropdown.style.display = "block";
+    } else {
+      filterDropdown.style.display = "none";
+    }
+  } else {
+    console.log("One or both elements not found.");
+  }
+}
+
