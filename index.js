@@ -44,7 +44,9 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       openingHoursFriday: branch.opening_hours_friday,
       openingHoursSaturday: branch.opening_hours_saturday,
       openingHoursSunday: branch.opening_hours_sunday,
-      accessibility: branch.accessibility
+      accessibility: branch.accessibility,
+      latitude: branch.latitude,
+      longitude: branch.longitude,
     }));
 
     //creating a marker for each within radius set
@@ -57,7 +59,8 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Thursday: ' + location.openingHoursThursday 
                         + '</b><br>Friday: ' + location.openingHoursFriday 
                         + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                        + '</b><br>Sunday: ' + location.openingHoursSunday);
+                        + '</b><br>Sunday: ' + location.openingHoursSunday
+                        + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.latitude +','+location.longitude + '" type="button" class="btn btn-danger text-white">Navigate</a>');
     });
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
