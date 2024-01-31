@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
-    //fetching data from api
+  //fetching data from api
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -37,11 +37,9 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
 
     //initialising the map
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    
     var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
       lng: parseFloat(branch.longitude),
@@ -69,22 +67,33 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Sunday: ' + location.openingHoursSunday);
     });
 
-    const firstLocation = document.querySelector("#branch-info").dataset.location;
-    if (!firstLocation) {
-      displayBranchDetails(apiUrl, 0);
-    }
-
-    // Determines if geo locations are used, if so create a pin at the user's location
-    if (geoUsed) {
-      userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
-      userLocationMarker.bindPopup('You are here');
-    }
+    // Display the list of nearest branches
+    displayNearestBranchesList(data);
 
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
- 
+
+function displayNearestBranchesList(data) {
+  const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
+
+  nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
+  data.slice(0, 5).forEach(branch => {
+    nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
+  });
+}
+
+function showBranchOnMap(branchName) {
+  const marker = map.getLayers().find(layer => layer.options.title === branchName);
+  if (marker) {
+    map.setView(marker.getLatLng(), 15);
+    marker.openPopup();
+  }
+}
+
+// Other functions remain unchanged
+
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
@@ -198,3 +207,35 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
+
+// Event listener for the filter button
+document.getElementById("filterDropdownButton").addEventListener("click", toggleFilterDropdown);
+
+// Prevent the dropdown from closing when clicking inside it or on the filter button
+document.addEventListener("click", function(event) {
+  var filterDropdown = document.getElementById("filterDropdown");
+  var filterButton = document.getElementById("filterDropdownButton");
+  console.log(event.target.tagName); // Log the clicked target's tag name
+  if (!filterDropdown.contains(event.target) && event.target !== filterButton && !event.target.classList.contains('switch') && event.target.tagName.toLowerCase() !== 'input') {
+    filterDropdown.style.display = "none";
+  }
+});
+
+function toggleFilterDropdown() {
+  var filterDropdown = document.getElementById("filterDropdown");
+  var filterDropdownButton = document.getElementById("filterDropdownButton");
+  
+  console.log("filterDropdown:", filterDropdown);
+  console.log("filterDropdownButton:", filterDropdownButton);
+
+  if (filterDropdown && filterDropdownButton) {
+    if (filterDropdown.style.display === "none" || filterDropdown.style.display === "") {
+      filterDropdown.style.display = "block";
+    } else {
+      filterDropdown.style.display = "none";
+    }
+  } else {
+    console.log("One or both elements not found.");
+  }
+}
+
