@@ -214,7 +214,7 @@ function displayBranchDetails(apiUrl, index) {
       const branch = data[index];
       //setting and displaying the values of closest branch in html
       branchInfoDiv.innerHTML = `
-      h3>${branch.branch_name}</h3>
+      <h3>${branch.branch_name}</h3>
       <p><strong>Opening Hours:</strong></p>
       <p>Monday: ${branch.opening_hours_monday}</p>
       <p>Tuesday: ${branch.opening_hours_tuesday}</p>
