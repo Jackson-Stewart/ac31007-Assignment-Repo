@@ -9,12 +9,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/> <!-- Open leaflet template -->
 </head>
 <body>
-
+ 
 <!-- Nav bar used at the top of each page -->
 <div class="navbar1 fixed-top">
   <nav class="navbar navbar-expand-lg bg-danger">
     <a class="navbar-brand text-white" href="#">ATM Locator</a>
-
+ 
     <!-- Mobile toggle icon -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon">
@@ -23,7 +23,7 @@
         <span class="bar"></span>
       </span>
     </button>
-
+ 
     <!-- Nav bar buttons -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
@@ -40,7 +40,6 @@
     </div>
   </nav>
 </div>
-
 <section id="main">
   <div id="content" class="container">
  
@@ -60,44 +59,46 @@
               <div class="dropdown-menu"  id="filterDropdown" aria-labelledby="filterDropdownButton">
                 <div class="services">
                   <!-- Filter options -->
-                  <!-- Wheelchair Accessible toggle -->
+                 <!-- Wheelchair Accessible toggle -->
                   <div class="words">
                     <p>Wheelchair Accessible</p>
                     <label class="switch">
-                      <input type="checkbox" />
-                      <span class="slider round"></span>
+                        <input type="checkbox" id="WheelchairAccessible" class="filter-checkbox" />
+                        <span class="slider round"></span>
                     </label>
                   </div>
                   <!-- AudioCash Machine toggle -->
                   <div class="words">
                     <p>AudioCash Machine</p>
                     <label class="switch">
-                      <input type="checkbox" />
-                      <span class="slider round"></span>
+                       <input type="checkbox" id="AudioCashMachine" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+
                     </label>
                   </div>
                   <!-- Pin Change toggle -->
                   <div class="words">
                     <p>Pin Change</p>
                     <label class="switch">
-                      <input type="checkbox" />
-                      <span class="slider round"></span>
+                      <input type="checkbox" id="PinChange" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+
                     </label>
                   </div>
                   <!-- Cash Deposits toggle -->
                   <div class="words">
                     <p>Cash Deposits</p>
                     <label class="switch">
-                      <input type="checkbox" />
-                      <span class="slider round"></span>
+                       <input type="checkbox" id="CashDeposits" class="filter-checkbox"/>
+                        <span class="slider round"></span>
                     </label>
                   </div>
                   <!-- Cheque Deposits toggle -->
                   <div class="words">
                     <p>Cheque Deposits</p>
                     <label class="switch">
-                      <input type="checkbox" />
-                      <span class="slider round"></span>
+                      <input type="checkbox" id="ChequeDeposits" class="filter-checkbox"/>
+                        <span class="slider round"></span>
                     </label>
                   </div>
                 </div>
@@ -152,7 +153,6 @@
         </div>
       </div>
     </div>
-
     <!-- Current Location checkbox -->
     <div class="row mt-2">
       <div class="col">
@@ -160,8 +160,11 @@
         <input type="checkbox" id="use-current-location" class="form-check-input"/>
       </div>
     </div>
-
-    <!-- Map Display -->
+        </div>
+      </div>
+    </div>
+  
+  <!-- Map Display -->
     <div class="row mt-3">
       <div class="col-md-9"> <!-- Adjusted width for the map -->
         <div id="map"></div>
@@ -171,7 +174,7 @@
         <div id="nearest-branches-list" class="mt-2"></div> <!-- Displaying nearest branches here -->
       </div>
     </div>
-
+ 
     <!-- Testing -->
     <div class="row mt-3">
       <div class="col">
@@ -179,18 +182,18 @@
         <p id="status"></p>
       </div>
     </div>
+<!-- Branch Details -->
 
-    <!-- Branch Details -->
     <div class="row mt-3">
       <div id="branch-details" class="col-md-4">
         <h2>Nearest Branch Details</h2>
         <div id="branch-info"></div>
       </div>
     </div>
-
+ 
   </div>
 </section>
-
+ 
 <!-- Used a default footer from bootstrap -->
 <footer class="py-3">
   <ul class="nav justify-content-center border-bottom pb-3 mb-3">
@@ -209,19 +212,14 @@
   </ul>
   <p class="text-center text-muted">© 2024 ATM Finder</p>
 </footer>
-
+ 
 <!-- Scripts and APIs used -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="index.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+ 
 </body>
 </html>
-
-
-
-
-
-  
+</html>
