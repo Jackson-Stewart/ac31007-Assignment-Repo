@@ -1,9 +1,16 @@
 let map;
-let radiusSlider = document.getElementById("radiusSlider"); // Corrected variable name
-let radiusLabel = document.getElementById("radiusValue");
-
+chosenRadius = 10000;
+let locationType = "branches";
+ 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
+
+  // Event listener for the "change" event on checkboxes
+  document.querySelectorAll('.filter-checkbox').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      FetchFilters();
+    });
+  });
 
   geoFindMe();
 
@@ -11,36 +18,33 @@ document.addEventListener("DOMContentLoaded", function () {
     geoFindMe();
   });
 
-  // slider input listener
-  radiusSlider.addEventListener("input", function () {
-    // amending the display to match slider value
-    radiusLabel.textContent = radiusSlider.value + " km";
-
-    // Updating map view of branches based on new radius value
-    updateMapView();
-  });
+  updateMapView();
 });
 
-async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
-  //fetching data from api
-  try {
+ 
+async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusChoice) {
+    //fetching data from api
+    const PassFilter = FetchFilters();
+    apiUrl += PassFilter;
+try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-
+ 
     //resetting the map
     if (map) {
       map.remove();
     }
-    
+   
     //setting the mapview to preset values
     map = L.map("map").setView([presetLatitude, presetLongitude], 10);
-
+ 
     //initialising the map
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    var locations = data.map(branch => ({
+    apiUrl = `${apiUrl}`;
+var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
       lng: parseFloat(branch.longitude),
       name: branch.branch_name,
@@ -53,38 +57,47 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       openingHoursSunday: branch.opening_hours_sunday,
       accessibility: branch.accessibility
     }));
-
+ 
     //creating a marker for each within radius set
     locations.forEach(function (location) {
       var marker = L.marker([location.lat, location.lng]).addTo(map);
-      marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: ' 
+      marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
                         + '</b><br>Monday: ' + location.openingHoursMonday
-                        + '</b><br>Tuesday: ' + location.openingHoursTuesday 
-                        + '</b><br>Wednesday: ' + location.openingHoursWednesday 
-                        + '</b><br>Thursday: ' + location.openingHoursThursday 
-                        + '</b><br>Friday: ' + location.openingHoursFriday 
-                        + '</b><br>Saturday: ' + location.openingHoursSaturday 
+                        + '</b><br>Tuesday: ' + location.openingHoursTuesday
+                        + '</b><br>Wednesday: ' + location.openingHoursWednesday
+                        + '</b><br>Thursday: ' + location.openingHoursThursday
+                        + '</b><br>Friday: ' + location.openingHoursFriday
+                        + '</b><br>Saturday: ' + location.openingHoursSaturday
                         + '</b><br>Sunday: ' + location.openingHoursSunday);
     });
-
-    // Display the list of nearest branches
+    const firstLocation = document.querySelector("#branch-info").dataset.location;
+    if (!firstLocation) {
+      displayBranchDetails(apiUrl, 0);
+    }
+ 
+    // Determines if geo locations are used, if so create a pin at the user's location
+    if (geoUsed) {
+      userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
+      userLocationMarker.bindPopup('You are here');
+      updateMapView;
+    }
+// Display the list of nearest branches
     displayNearestBranchesList(data);
-
+ 
+ 
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
-
+ 
 function displayNearestBranchesList(data) {
   const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
-
+ 
   nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
   data.slice(0, 5).forEach(branch => {
     nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
   });
-}
-
-function showBranchOnMap(branchName) {
+}function showBranchOnMap(branchName) {
   const marker = map.getLayers().find(layer => layer.options.title === branchName);
   if (marker) {
     map.setView(marker.getLatLng(), 15);
@@ -92,12 +105,10 @@ function showBranchOnMap(branchName) {
   }
 }
 
-// Other functions remain unchanged
-
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
-
+ 
   if (!useCurrentLocationCheckbox.checked) {
     // Only perform search if "Use Current Location" is not checked
     // Using a geocoding service, Nominatim to get the coordinates
@@ -108,9 +119,8 @@ function performSearch() {
           const result = data[0];
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
-
-          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=10000&table=branches`;
-
+          const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+ 
           fetchData(apiUrl, lat, lon);
         } else {
           alert('Location not found');
@@ -119,58 +129,56 @@ function performSearch() {
       .catch(error => console.error('Error:', error));
   }
 }
-
+ 
 function geoFindMe() {
     //geolocation variables and checkbox
   const status = document.querySelector("#status");
   const mapLink = document.querySelector("#map-link");
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
-
-
+ 
+ 
   mapLink.href = "";
   mapLink.textContent = "";
-
+ 
   function success(position) {
     //assigning values received from geoloaction allowance
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-
     status.textContent = "";
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-
+    
     //setting the current co-ordinates within the url
-    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=10000&table=branches`;
-
+    const apiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
     fetchData(apiUrl, latitude, longitude, true);
   }
-
+ 
   //preset location if geolocation is blocked
   function usePresetLocation() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
-    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=10000&table=branches`;
+    const presetApiUrl = `https://uq1fh77mk8.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
-
+ 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
     if (!firstLocation) {
       displayBranchDetails(presetApiUrl, 0);
     }
   }
-
-  //geolocation validation 
+ 
+  //geolocation validation
   function error() {
     status.textContent = "Unable to retrieve your location";
-    
+   
     //setting the status of checkbox
     useCurrentLocationCheckbox.checked = false;
-
+ 
     if (useCurrentLocationCheckbox.checked) {
     //use preset location if unchecked
       usePresetLocation();
     }
   }
-
+ 
   //further geolocation error handling and validation
   if (!navigator.geolocation) {
     status.textContent = "Geolocation is not supported by your browser";
@@ -185,9 +193,39 @@ function geoFindMe() {
   }
 }
 
+function FetchFilters() {
+  var filters = '';
+  var WheelChairAccessSwitch = document.getElementById("WheelchairAccessible");
+  var AudioCashMachineSwitch = document.getElementById("AudioCashMachine");
+  var PinChangeSwitch = document.getElementById("PinChange");
+  var CashDepositSwitch = document.getElementById("CashDeposits");
+  var ChequeDepositsSwitch = document.getElementById("ChequeDeposits");
+
+  if (WheelChairAccessSwitch.checked) {
+    filters += ' AND accessibility LIKE "%WheelchairAccess%"';
+  }
+  if (AudioCashMachineSwitch.checked) {
+    filters += ' AND accessibility LIKE "%AudioCashMachine%"';
+  }
+  if (PinChangeSwitch.checked) {
+    filters += ' AND atm_services LIKE "%PINChange%"';
+  }
+  if (CashDepositSwitch.checked) {
+    filters += ' AND atm_services LIKE "%CashDeposits%"';
+  }
+  if (ChequeDepositsSwitch.checked) {
+    filters += ' AND atm_services LIKE "%ChequeDeposits%"';
+  }
+
+  console.log("This function works");
+  console.log(filters);
+  var encodedString = encodeURIComponent(filters);
+  return ("&filter=" + encodedString)
+}
+
 function displayBranchDetails(apiUrl, index) {
   const branchInfoDiv = document.getElementById('branch-info');
-
+ 
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -207,10 +245,88 @@ function displayBranchDetails(apiUrl, index) {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
-
+ 
+ 
+function updateMapView() {
+  const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
+ 
+  if (useCurrentLocationCheckbox.checked) {
+    const searchInput = document.getElementById('search-input').value;
+ 
+    if (searchInput.trim() !== '') {
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const result = data[0];
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+ 
+            const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+ 
+            fetchData(apiUrl, lat, lon, false);
+          } else {
+            alert('Location not found');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      geoFindMe();
+    }
+  }
+ 
+  if (!useCurrentLocationCheckbox.checked) {
+    const searchInput = document.getElementById('search-input').value;
+ 
+    if (searchInput.trim() !== '') {
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.length > 0) {
+            const result = data[0];
+            const lat = parseFloat(result.lat);
+            const lon = parseFloat(result.lon);
+ 
+            const apiUrl = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+ 
+            fetchData(apiUrl, lat, lon, false);
+          } else {
+            alert('Location not found');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+      geoFindMe();
+    }
+  }
+}
+ 
+function updateLocationType(checkbox) {
+  document.querySelectorAll('input[type="checkbox"]').forEach((cbLT) => {
+    if (cbLT !== checkbox && cbLT.id !== 'use-current-location' && cbLT.id !== 'radiusChoice') {
+      cbLT.checked = false;
+    }
+  });
+ 
+  locationType = checkbox.checked ? checkbox.value : null;
+ 
+  updateMapView();
+}
+ 
+function updateRadius(checkbox) {
+  document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+    if (cb !== checkbox && cb.id !== 'use-current-location' && cb.id !== 'locationType') {
+      cb.checked = false;
+    }
+  });
+ 
+  chosenRadius = checkbox.checked ? parseInt(checkbox.value) : null;
+ 
+  updateMapView();
+}
 // Event listener for the filter button
 document.getElementById("filterDropdownButton").addEventListener("click", toggleFilterDropdown);
-
+ 
 // Prevent the dropdown from closing when clicking inside it or on the filter button
 document.addEventListener("click", function(event) {
   var filterDropdown = document.getElementById("filterDropdown");
@@ -220,14 +336,14 @@ document.addEventListener("click", function(event) {
     filterDropdown.style.display = "none";
   }
 });
-
+ 
 function toggleFilterDropdown() {
   var filterDropdown = document.getElementById("filterDropdown");
   var filterDropdownButton = document.getElementById("filterDropdownButton");
-  
+ 
   console.log("filterDropdown:", filterDropdown);
   console.log("filterDropdownButton:", filterDropdownButton);
-
+ 
   if (filterDropdown && filterDropdownButton) {
     if (filterDropdown.style.display === "none" || filterDropdown.style.display === "") {
       filterDropdown.style.display = "block";
@@ -238,4 +354,3 @@ function toggleFilterDropdown() {
     console.log("One or both elements not found.");
   }
 }
-
