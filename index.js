@@ -72,6 +72,8 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                           + '</b><br>County: ' + location.county 
                           + '</b><br>Country: ' + location.country 
                           + '</b><br>Post Code: ' + location.postCode);
+                        + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.latitude +','+location.longitude + '" type="button" class="btn btn-danger text-white">Navigate</a>'); // Adds Google maps to each marker
+
     });
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
