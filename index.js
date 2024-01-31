@@ -60,7 +60,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Friday: ' + location.openingHoursFriday 
                         + '</b><br>Saturday: ' + location.openingHoursSaturday 
                         + '</b><br>Sunday: ' + location.openingHoursSunday
-                        + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.latitude +','+location.longitude + '" type="button" class="btn btn-danger text-white">Navigate</a>');
+                        + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.latitude +','+location.longitude + '" type="button" class="btn btn-danger text-white">Navigate</a>'); // Adds Google maps to each marker
     });
 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
