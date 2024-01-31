@@ -26,7 +26,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     //fetching data from api
     const PassFilter = FetchFilters();
     apiUrl += PassFilter;
-  try {
+try {
     const response = await fetch(apiUrl);
     const data = await response.json();
  
@@ -42,9 +42,9 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
- 
+
     apiUrl = `${apiUrl}`;
-    var locations = data.map(branch => ({
+var locations = data.map(branch => ({
       lat: parseFloat(branch.latitude),
       lng: parseFloat(branch.longitude),
       name: branch.branch_name,
@@ -70,7 +70,6 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                         + '</b><br>Saturday: ' + location.openingHoursSaturday
                         + '</b><br>Sunday: ' + location.openingHoursSunday);
     });
- 
     const firstLocation = document.querySelector("#branch-info").dataset.location;
     if (!firstLocation) {
       displayBranchDetails(apiUrl, 0);
@@ -82,7 +81,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       userLocationMarker.bindPopup('You are here');
       updateMapView;
     }
-    // Display the list of nearest branches
+// Display the list of nearest branches
     displayNearestBranchesList(data);
  
  
@@ -98,18 +97,14 @@ function displayNearestBranchesList(data) {
   data.slice(0, 5).forEach(branch => {
     nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
   });
-}
- 
-function showBranchOnMap(branchName) {
+}function showBranchOnMap(branchName) {
   const marker = map.getLayers().find(layer => layer.options.title === branchName);
   if (marker) {
     map.setView(marker.getLatLng(), 15);
     marker.openPopup();
   }
 }
- 
-// Other functions remain unchanged
- 
+
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
