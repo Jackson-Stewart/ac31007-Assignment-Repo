@@ -138,7 +138,7 @@ function performSearch() {
           const result = data[0];
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
-          const apiUrl = `https://l49dvem0sc.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+          const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -168,7 +168,7 @@ function geoFindMe() {
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     
     //setting the current co-ordinates within the url
-    const apiUrl = `https://l49dvem0sc.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
+    const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
     fetchData(apiUrl, latitude, longitude, true);
   }
  
@@ -177,7 +177,7 @@ function geoFindMe() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
 
-    const presetApiUrl = `https://l49dvem0sc.execute-api.us-east-1.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
+    const presetApiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
 
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
  
@@ -289,7 +289,7 @@ function updateMapView() {
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
 
-            const apiUrl = `https://l49dvem0sc.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+            const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
             fetchData(apiUrl, lat, lon, false);
           } else {
@@ -314,7 +314,7 @@ function updateMapView() {
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
 
-            const apiUrl = `https://l49dvem0sc.execute-api.us-east-1.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+            const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
             fetchData(apiUrl, lat, lon, false);
           } else {
