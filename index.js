@@ -1,7 +1,6 @@
 let map;
 chosenRadius = 10000;
 let locationType = "branches";
-let fetchAsyncCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -23,105 +22,140 @@ document.addEventListener("DOMContentLoaded", function () {
 
  
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusChoice) {
-  //fetching data from api
-  fetchAsyncCount++;
-  if(fetchAsyncCount<5){
-    const PassFilter = FetchFilters();
-    apiUrl += PassFilter;
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-    
-        //resetting the map
-        if (map) {
-          map.remove();
-        }
-      
-        //setting the mapview to preset values
-        map = L.map("map").setView([presetLatitude, presetLongitude], 10);
-    
-        //initialising the map
-        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
+  // Fetching data from API
+  const PassFilter = FetchFilters();
+  apiUrl += PassFilter;
 
-        apiUrl = `${apiUrl}`;
-    var locations = data.map(branch => ({
-          lat: parseFloat(branch.latitude),
-            lng: parseFloat(branch.longitude),
-            name: branch.branch_name,
-            openingHoursMonday: branch.opening_hours_monday,
-            openingHoursTuesday: branch.opening_hours_tuesday,
-            openingHoursWednesday: branch.opening_hours_wednesday,
-            openingHoursThursday: branch.opening_hours_thursday,
-            openingHoursFriday: branch.opening_hours_friday,
-            openingHoursSaturday: branch.opening_hours_saturday,
-            openingHoursSunday: branch.opening_hours_sunday,
-            accessibility: branch.accessibility,
-            contactNumber: branch.contact_phone,
-            street: branch.street_name,
-            town: branch.town_name,
-            county: branch.country_subdivision,
-            country: branch.country,
-            postCode: branch.post_code
-        }));
-    
-        //creating a marker for each within radius set
-        locations.forEach(function (location) {
-          var marker = L.marker([location.lat, location.lng]).addTo(map);
-          marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
-                            + '</b><br>Monday: ' + location.openingHoursMonday
-                            + '</b><br>Tuesday: ' + location.openingHoursTuesday 
-                            + '</b><br>Wednesday: ' + location.openingHoursWednesday 
-                            + '</b><br>Thursday: ' + location.openingHoursThursday 
-                            + '</b><br>Friday: ' + location.openingHoursFriday 
-                            + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                            + '</b><br>Sunday: ' + location.openingHoursSunday
-                            + '</b><br>Sunday: ' + location.openingHoursSunday
-                            + '</b><br>Accessibility: ' + location.accessibility
-                              + '</b><br>Contact Number: ' + location.contactNumber 
-                              + '</b><br>Street: ' + location.street 
-                              + '</b><br>Town: ' + location.town 
-                              + '</b><br>County: ' + location.county 
-                              + '</b><br>Country: ' + location.country 
-                              + '</b><br>Post Code: ' + location.postCode
-                            + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ location.lat +','+location.lng + '" type="button" class="btn btn-danger text-white">Navigate</a>'
-                            // Adds Google maps to each marker
-                            );
-        });
-        const firstLocation = document.querySelector("#branch-info").dataset.location;
-        if (!firstLocation) {
+  try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      // Resetting the map
+      if (map) {
+          map.remove();
+      }
+
+      // Setting the mapview to preset values
+      map = L.map("map").setView([presetLatitude, presetLongitude], 10);
+
+      // Initializing the map
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      apiUrl = `${apiUrl}`;
+      var locations = [];
+
+      if (locationType === "branches") {
+          // Process branches data
+          locations = data.map(branch => ({
+              lat: parseFloat(branch.latitude),
+              lng: parseFloat(branch.longitude),
+              name: branch.branch_name,
+              openingHoursMonday: branch.opening_hours_monday,
+              openingHoursTuesday: branch.opening_hours_tuesday,
+              openingHoursWednesday: branch.opening_hours_wednesday,
+              openingHoursThursday: branch.opening_hours_thursday,
+              openingHoursFriday: branch.opening_hours_friday,
+              openingHoursSaturday: branch.opening_hours_saturday,
+              openingHoursSunday: branch.opening_hours_sunday,
+              accessibility: branch.accessibility,
+              contactNumber: branch.contact_phone,
+              street: branch.street_name,
+              town: branch.town_name,
+              county: branch.country_subdivision,
+              country: branch.country,
+              postCode: branch.post_code
+          }));
+
+          // Create markers for each branch within the specified radius
+          locations.forEach(function (location) {
+              var marker = L.marker([location.lat, location.lng]).addTo(map);
+              marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
+                  + '</b><br>Monday: ' + location.openingHoursMonday
+                  + '</b><br>Tuesday: ' + location.openingHoursTuesday
+                  + '</b><br>Wednesday: ' + location.openingHoursWednesday
+                  + '</b><br>Thursday: ' + location.openingHoursThursday
+                  + '</b><br>Friday: ' + location.openingHoursFriday
+                  + '</b><br>Saturday: ' + location.openingHoursSaturday
+                  + '</b><br>Sunday: ' + location.openingHoursSunday
+                  + '</b><br>Accessibility: ' + location.accessibility
+                  + '</b><br>Contact Number: ' + location.contactNumber
+                  + '</b><br>Street: ' + location.street
+                  + '</b><br>Town: ' + location.town
+                  + '</b><br>County: ' + location.county
+                  + '</b><br>Country: ' + location.country
+                  + '</b><br>Post Code: ' + location.postCode
+                  + '</b><br><a href="https://www.google.com/maps/search/?api=1&query=' + location.lat + ',' + location.lng + '" type="button" class="btn btn-danger text-white">Navigate</a>'
+                  // Adds Google maps link to each marker
+              );
+          });
+      } else if (locationType === 'atm') {
+          // Process ATM data
+          locations = data.map(atm => ({
+              lat: parseFloat(atm.latitude),
+              lng: parseFloat(atm.longitude),
+              name: atm.atm_identification,
+              supported_currencies: atm.supported_currencies,
+              supported_languages: atm.supported_languages,
+              accessibility: atm.accessibility
+          }));
+
+          // Create markers for each ATM within the specified radius
+          locations.forEach(function (atm) {
+              var marker = L.marker([atm.lat, atm.lng]).addTo(map);
+              marker.bindPopup('<b>' + atm.name + '</b><br>Useful Information: '
+                  + '</b><br>Supported Currencies ' + atm.supported_currencies
+                  + '</b><br>Supported Languages ' + atm.supported_languages
+                  + '</b><br>Accessibility: ' + atm.accessibility
+              );
+          });
+      }
+
+      const firstLocation = document.querySelector("#branch-info").dataset.location;
+      if (!firstLocation) {
           displayBranchDetails(apiUrl, 0);
-        }
-      
-        // Determines if geo locations are used, if so create a pin at the user's location
-        if (geoUsed) {
+      }
+
+      // Determines if geo locations are used, if so, create a pin at the user's location
+      if (geoUsed) {
           userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
           userLocationMarker.bindPopup('You are here');
-          updateMapView;
-        }
-    // Display the list of nearest branches
+          updateMapView();
+      }
+
+      // Display the list of nearest branches
+      if (locationType === "branches")
+      {
         displayNearestBranchesList(data);
-        fetchAsyncCount--;
+      }
+      else if (locationType === "atm")
+      {
+        displayNearestATMsList(data);
+      }
+
   } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+      console.error("Error fetching data:", error);
   }
 }
- 
+
+
 function displayNearestBranchesList(data) {
-  const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
+  const nearestBranchesListDiv = document.getElementById('nearest-thingy-list');
  
   nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
   data.slice(0, 5).forEach(branch => {
     nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
   });
-}function showBranchOnMap(branchName) {
-  const marker = map.getLayers().find(layer => layer.options.title === branchName);
-  if (marker) {
-    map.setView(marker.getLatLng(), 15);
-    marker.openPopup();
-  }
+}
+
+function displayNearestATMsList(data) {
+  const nearestATMsListDiv = document.getElementById('nearest-thingy-list');
+
+  nearestATMsListDiv.innerHTML = '<h3>Nearest ATMs</h3>';
+  data.slice(0, 5).forEach(atm => {
+    nearestATMsListDiv.innerHTML += `<button class="btn btn-link" onclick="showATMOnMap('${atm.atm_identification}')">${atm.atm_identification}</button><br>`;
+  });
 }
 
 function performSearch() {
@@ -245,13 +279,14 @@ function FetchFilters() {
 }
 
 function displayBranchDetails(apiUrl, index) {
-  const branchInfoDiv = document.getElementById('branch-info');
+  const branchInfoDiv = document.getElementById('nearest-info');
  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
       const branch = data[index];
       //setting and displaying the values of closest branch in html
+      branchInfoDiv.innerHTML = '<h2>Nearest Branch Details</h2>';
       branchInfoDiv.innerHTML = `
       <h3>${branch.branch_name}</h3>
       <p><strong>Opening Hours:</strong></p>
@@ -272,6 +307,25 @@ function displayBranchDetails(apiUrl, index) {
       `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
     })
     .catch(error => console.error('Error fetching data:', error));
+}
+
+function displayATMDetails(apiUrl, index) {
+  const atmInfoDiv = document.getElementById('nearest-info');
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const atm = data[index];
+      // Set and display the values of the closest ATM in HTML
+      displayATMDetails.innerHTML = '<h2>Nearest ATMs Details</h2>';
+      atmInfoDiv.innerHTML = `
+        <h3>${atm.atm_identification}</h3>
+        <p><strong>Supported Currencies:</strong> ${atm.supported_currencies}</p>
+        <p><strong>Supported Languages:</strong> ${atm.supported_languages}</p>
+        <p><strong>Accessibility:</strong> ${atm.accessibility}</p>
+      `;
+    })
+    .catch(error => console.error('Error fetching ATM data:', error));
 }
 
 function updateMapView() {
@@ -381,4 +435,3 @@ function toggleFilterDropdown() {
     console.log("One or both elements not found.");
   }
 }
-
