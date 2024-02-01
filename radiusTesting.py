@@ -10,10 +10,18 @@ def getAtms(lat, long, radius):      #lat long and radius will be passed in from
     try:
         cursor = cnx.cursor()
         cursor.execute("""
-            SELECT atm_identification, ( 3959 * acos( cos( radians(56.458510) ) * cos( radians( latitude) ) 
-            * cos( radians( longitude ) - radians(-2.982718) ) + sin( radians(56.458510) ) * sin(radians(latitude)) ) ) AS distance 
-            FROM atm_data 
-            HAVING distance < 5
+            SELECT {Nfields},
+                ST_Distance_Sphere(
+                    geolocation, 
+                    ST_GeomFromText('POINT({Nlongitude} {Nlatitude})')
+                ) AS distance
+            FROM 
+                {Ntable}_data
+            WHERE 
+                ST_Distance_Sphere(
+                    geolocation, 
+                    ST_GeomFromText('POINT({Nlongitude} {Nlatitude})')
+                ) <= {Ndistance}
             ORDER BY distance ;
             """)                               #currently gets all atms
         result = cursor.fetchall()
@@ -22,4 +30,6 @@ def getAtms(lat, long, radius):      #lat long and radius will be passed in from
     finally:
         cnx.close()
 
-getAtms(1,2,3)
+getAtms(52.415085,-4.083687,10)
+56.461773, -2.979359
+
