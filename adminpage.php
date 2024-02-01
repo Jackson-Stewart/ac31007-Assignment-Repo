@@ -1,16 +1,12 @@
 <?php 
-// this resumes the session
 session_start();
 
-// this checks if session variables staffID, AdminEmail and admin role are set
-// if something is not set then redirects the user to the login page and quits session
-if (!isset($_SESSION['staffID']) || $_SESSION['role'] != "Admin") 
-{   
-    // redirect the user to login.php page if something is missing, prevents unauthorized access to adminpage
-    header("Location: login.php");
+// Check if the user is not logged in, redirect to the login page
+if (!isset($_SESSION['staffID']) || $_SESSION['role'] != "Admin") {
+    
+    header("login.php");
     exit();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -27,14 +23,11 @@ if (!isset($_SESSION['staffID']) || $_SESSION['role'] != "Admin")
 
 <body>
 
-<!-- this is the navigation bar at the top of the page, has logout button and logged in as text-->
+<!-- this is the navigation bar at the top of the page, has logout button -->
     <nav>
         <div class="navbar">
-        <div class="nav-text-left">
-                    <p style="color: white; margin-top:10px">Logged in as: <?php echo $_SESSION['staffID']; ?></p>
-                </div>
             <div class="nav-buttons">
-                <a href="index.html"><button class="logout-button" name="logout">Sign Out</button></a>
+                <a href="login.php"><button class="logout-button">Sign Out</button></a>
             </div>
         </div>
     </nav>
@@ -46,7 +39,7 @@ if (!isset($_SESSION['staffID']) || $_SESSION['role'] != "Admin")
         <!-- this is where the map is displayed --> 
         <div id="map"></div>
         <!-- form used to get user input --> 
-        <form action='' id='branchForm' method='post' onsubmit="fetchData(); return false;"> <!--return false prevents the website from doing a full refresh -->
+        <form action='' id='branchForm' method='post' onsubmit="fetchData(); return false;">
             <p>please enter longitude and latitude or select Branch/ATM on map<p>
                 <button id="getLocationButton">Get My Location</button>
             <input type='text' id='latitude' name='latitude' placeholder='latitude of branch' required>
@@ -85,7 +78,7 @@ let map;
 
         // either atm or branches is selected, updates api link to get the correct data
         const table = selectedAction === 'atm' ? 'atm' : 'branches';
-        const apiLink = `https://9o3co4oqce.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=${table}`;
+        const apiLink = `https://gxzo796p28.execute-api.us-east-1.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=10&table=${table}`;
 
         // attempts to fetch the data from the api, either returns data or displays error message
         try {

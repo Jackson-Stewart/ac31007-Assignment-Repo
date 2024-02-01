@@ -8,7 +8,6 @@ body {
 .navbar {
     background-color: #ec0000;
     overflow: hidden;
-    justify-content: flex-start;
 }
 
 /* for buttons inside navigation bar */
@@ -74,13 +73,5 @@ th, td {
 /*table styling of cells*/
 th {
     background-color: #f2f2f2; /* Add a background color to header cells */
-}
-
-/* this is for the "Logged in as: " text */
-.nav-text-left
-{
-    float: left;
-    display: flex;
-    align-items: center;
 }
 
