@@ -47,6 +47,8 @@ paths:
           description: "200 response"
           schema:
             $ref: "#/definitions/Empty"
+      security:
+        - api_key: [] 
       x-amazon-apigateway-integration:
         type: "aws_proxy"
         httpMethod: "POST"
@@ -97,6 +99,8 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
+      security:
+        - api_key: [] 
       x-amazon-apigateway-integration:
         type: "mock"
         responses:
@@ -109,6 +113,13 @@ paths:
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
+
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+    
 definitions:
   Empty:
     type: "object"
