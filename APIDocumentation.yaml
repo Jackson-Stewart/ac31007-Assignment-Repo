@@ -1,0 +1,138 @@
+---
+swagger: "2.0"
+info:
+  version: "2024-02-02T12:37:01Z"
+  title: "santanderAPI"
+host: "8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com"
+basePath: "/production"
+schemes:
+- "https"
+paths:
+  /resources:
+    get:
+      produces:
+      - "application/json"
+      parameters:
+        - name: lat
+          in: query
+          description: Current latitude
+          required: true
+          type: number
+
+        - name: long
+          in: query
+          description: Current longitude
+          required: true
+          type: number
+
+        - name: radius
+          in: query
+          description: Radius to search in meters
+          required: true
+          type: integer
+          
+        - name: table
+          in: query
+          description: Select either "atm" or "branches" to search
+          required: true
+          type: string
+          
+        - name: filter
+          in: query
+          description: Add filters (space for none)
+          required: false
+          type: string
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:590183695471:function:santanderGET/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        contentHandling: "CONVERT_TO_TEXT"
+    post:
+      produces:
+      - "application/json"
+      parameters:
+        - name: requestBody
+          in: body
+          description: Request body for the POST method
+          required: true
+          schema:
+            $ref: "#/definitions/RequestBodySchema"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      x-amazon-apigateway-integration:
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-2:590183695471:function:santanderPOST/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        contentHandling: "CONVERT_TO_TEXT"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        type: "mock"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        passthroughBehavior: "when_no_match"
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
+    
+  RequestBodySchema:
+    type: "object"
+    properties:
+      method:
+        type: "string"
+        description: "Select to 'delete', 'insert' or 'edit'"
+      table:
+        type: "string"
+        description: "Select table 'atm' or 'branches'"
+      id:
+        type: "string"
+        description: "ID of atm or branch"
+      field:
+        type: "string"
+        description: "If inserting or editing, field to give a value to"
+      value:
+        type: "string"
+        description: "New value for field"
+    required:
+      - method
+      - table
+      - id
