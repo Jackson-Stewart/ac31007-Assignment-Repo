@@ -6,7 +6,8 @@ let fetchAsyncCount = 0;
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
 
-  // Event listener for the change of event on filter toggles
+// Event listener for the change of event on filter toggles
+
   document.querySelectorAll('.filter-checkbox').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
       FetchFilters();
@@ -29,7 +30,8 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     const PassFilter = FetchFilters();
     apiUrl += PassFilter;
     try {
-        const response = await fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } });
+  const response = await fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } });
+
         const data = await response.json();
     
         //resetting the map
@@ -126,7 +128,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
             country: atm.country,
             post_code: atm.post_code,
           }));
-
+          
           //plotting atm markers
           locations.forEach(function (atm) {
             var marker = L.marker([atm.lat, atm.lng]).addTo(map);
@@ -137,12 +139,13 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
             var accessibilityItems = atm.accessibility.split(',');
             var servicesInfo = '<b>ATM Services:</b><br>';
             var servicesItems = atm.atm_services.split(',')
-            
+
             var otherAccessInfo = '<b>Other Accessibility:</b><br>'
             var otherAccessItems = atm.other_accessibility_name.split(',');
 
             accessibilityItems.forEach(function (item) {
               accessibilityInfo += item .trim() + '<br>';
+
             });
 
             servicesItems.forEach(function (item) {
@@ -154,6 +157,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
             });
             
             //formatting displayed information
+
             marker.bindPopup('<b>Street Name: ' + atm.street_name 
               + '</b><br>'
                 + '</b><br>Supported Currencies: ' + atm.supported_currencies
@@ -176,6 +180,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                 + '</b><br>Country: ' + atm.country
                 + '</b><br>Post Code: ' + atm.post_code
                 + '</b><br><a href="https://www.google.com/maps/search/?api=1&query='+ atm.lat +','+ atm.lng + '" type="button" class="btn btn-danger text-white">Navigate</a>'
+
             );
         });
         
@@ -212,7 +217,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
   }
   }
 }
- 
+
 function showBranchOnMap(branchName) {
   const marker = map.getLayers().find(layer => layer.options.title === branchName);
   if (marker) {
@@ -375,7 +380,6 @@ function displayNearestBranchesList(data) {
     nearestThingyListDiv.appendChild(branchDropdown);
   });
 }
-
 function displayBranchDetails(apiUrl, index) {
   const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
@@ -385,7 +389,6 @@ function displayBranchDetails(apiUrl, index) {
       .then(data => {
         
         const branch = data[index];
-
         fetchAsyncCount--;
       })
       .catch(error => console.error('Error fetching data:', error));
@@ -470,17 +473,19 @@ function displayATMDetails(apiUrl, index) {
   fetchAsyncCount++;
   if (fetchAsyncCount < 5) {
     fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } })
+
       .then(response => response.json())
       .then(data => {
         const atm = data[index];
 
-        // attaching a click event listener to show branch details on button click
+
         ATMButton.addEventListener('click', function () {
           showATMDetails(atm);
         });
 
     // appending the dropdown to the approproate div
     nearestThingyListDiv.appendChild(ATMButton);
+
 
         fetchAsyncCount--;
       })
@@ -512,6 +517,7 @@ function showATMDetails(atm, dropdownMenu) {
   // Setting and displaying the values of the selected branch in HTML
   const atmDetails = document.createElement('div');
   atmDetails.innerHTML = `
+
         <p><strong>Nearest ATM Details:</strong></p>
         <p>Street Name: ${atm.street_name}</p>
         <p>Supported Currencies: ${atm.supported_currencies}</p>
@@ -521,14 +527,15 @@ function showATMDetails(atm, dropdownMenu) {
         <p>${otherAccessInfo}</p>
         <p>24-Hour Access: ${access}</p>
         <p>Minimum Amount: £${atm.minimum_amount}</p>
+
         <p>Type of Location: ${atm.typelocation}</p>
         <p>Town Name: ${atm.town_name}</p>
         <p>Country Subdivision: ${atm.country_subdivision}</p>
         <p>Country: ${atm.country}</p>
         <p>Post Code: ${atm.post_code}</p>
   `;
+        dropdownMenu.appendChild(atmDetails);
 
-  dropdownMenu.appendChild(atmDetails);
 }
 
 function updateMapView() {
@@ -638,4 +645,3 @@ function toggleFilterDropdown() {
     console.log("One or both elements not found.");
   }
 }
-
