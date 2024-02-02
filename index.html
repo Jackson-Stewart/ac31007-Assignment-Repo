@@ -160,37 +160,40 @@
         <input type="checkbox" id="use-current-location" class="form-check-input"/>
       </div>
     </div>
+
+        <!-- Map Display -->
+          <div class="row mt-3">
+            <div class="col-md-9"> <!-- Adjusted width for the map -->
+              <div id="map"></div>
+              <a id="map-link" target="_blank"></a>
+            </div>
+            <div class="col-md-3">
+              <div id="nearest-thingy-list" class="mt-2"></div> <!-- Displaying nearest branches here -->
+              <div id="branch-details">
+                <h2>Nearest Branch Details</h2>
+                <div id="branch-info"></div>
+              </div>
+            </div>
+
+
         </div>
       </div>
-    </div>
-  
-  <!-- Map Display -->
-    <div class="row mt-3">
-      <div class="col-md-9"> <!-- Adjusted width for the map -->
-        <div id="map"></div>
-        <a id="map-link" target="_blank"></a>
-      </div>
-      <div class="col-md-3">
-        <div id="nearest-branches-list" class="mt-2"></div> <!-- Displaying nearest branches here -->
-      </div>
-    </div>
  
     <!-- Testing -->
-    <div class="row mt-3">
+
       <div class="col">
         <button id="find-me" class="btn btn-primary">Show my location</button><br />
         <p id="status"></p>
       </div>
-    </div>
 <!-- Branch Details -->
 
-    <div class="row mt-3">
+    <!-- <div class="row mt-3">
       <div id="branch-details" class="col-md-4">
         <h2>Nearest Branch Details</h2>
         <div id="branch-info"></div>
       </div>
     </div>
- 
+  -->
   </div>
 </section>
  
@@ -221,5 +224,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
  
 </body>
-</html>
 </html>
