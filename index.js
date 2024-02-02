@@ -375,7 +375,6 @@ function displayNearestBranchesList(data) {
     // appending button and menu to dropdown
     branchDropdown.appendChild(dropdownButton);
     branchDropdown.appendChild(dropdownMenu);
-
     // appending the dropdown to the approproate div
     nearestThingyListDiv.appendChild(branchDropdown);
   });
@@ -536,14 +535,6 @@ function showATMDetails(atm, dropdownMenu) {
         <p>Post Code: ${atm.post_code}</p>
   `;
         dropdownMenu.appendChild(atmDetails);
-
-
-      `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
-      fetchAsyncCount--;
-    })
-    .catch(error => console.error('Error fetching data:', error));
-
-}
 
 }
 
