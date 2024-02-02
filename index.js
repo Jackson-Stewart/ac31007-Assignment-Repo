@@ -383,6 +383,7 @@ function displayBranchDetails(apiUrl, index) {
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
+        
         const branch = data[index];
 
         // Create a button for the branch
@@ -409,6 +410,12 @@ function showBranchDetails(branch) {
   const branchInfoDiv = document.getElementById('branch-info');
   const openingHoursSaturday = (branch.opening_hours_saturday === "00:00 - 00:00") ? "Closed" : branch.opening_hours_saturday;
   const openingHoursSunday = (branch.opening_hours_sunday === "00:00 - 00:00") ? "Closed" : branch.opening_hours_sunday;
+  var accessibilityInfo = '<strong>Accessibility:</strong><br>';
+  var accessibilityItems = branch.accessibility.split(',');
+
+      accessibilityItems.forEach(function (item) {
+      accessibilityInfo += item.trim() + '<br>';
+  });
 
   // Setting and displaying the values of the selected branch in HTML
   branchInfoDiv.innerHTML = `
@@ -420,7 +427,7 @@ function showBranchDetails(branch) {
       <p>Friday: ${branch.opening_hours_friday}</p>
       <p>Saturday: ${openingHoursSaturday}</p>
       <p>Sunday: ${openingHoursSunday}</p>
-      <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      <p> ${accessibilityInfo}</p>
       <p>Contact Number: ${branch.contact_phone}</p>
       <p>Street: ${branch.street_name}</p>
       <p>Town: ${branch.town_name}</p>
