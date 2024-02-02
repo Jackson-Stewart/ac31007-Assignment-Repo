@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   updateMapView();
 });
 
- 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusChoice) {
   //fetching data from api
   fetchAsyncCount++;
@@ -33,6 +32,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
   const response = await fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } });
 
         const data = await response.json();
+
     
         //resetting the map
         if (map) {
@@ -41,7 +41,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       
         //setting the mapview to preset values
         map = L.map("map").setView([presetLatitude, presetLongitude], 10);
-    
+  
         //initialising the map
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -218,7 +218,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
   }
 }
 
-function showBranchOnMap(branchName) {
+  function showBranchOnMap(branchName) {
   const marker = map.getLayers().find(layer => layer.options.title === branchName);
   if (marker) {
     map.setView(marker.getLatLng(), 15);
@@ -375,7 +375,6 @@ function displayNearestBranchesList(data) {
     // appending button and menu to dropdown
     branchDropdown.appendChild(dropdownButton);
     branchDropdown.appendChild(dropdownMenu);
-
     // appending the dropdown to the approproate div
     nearestThingyListDiv.appendChild(branchDropdown);
   });
@@ -428,6 +427,7 @@ function showBranchDetails(branch, dropdownMenu) {
       <p>County: ${branch.country_subdivision}</p>
       <p>Country: ${branch.country}</p>
       <p>Post Code: ${branch.post_code}</p>
+
   `;
 
   dropdownMenu.appendChild(branchDetails);
