@@ -1,7 +1,6 @@
 let map;
-chosenRadius = 10000;
-let locationType = "branches";
-let fetchAsyncCount = 0;
+let radiusSlider = document.getElementById("radiusSlider"); // Corrected variable name
+let radiusLabel = document.getElementById("radiusValue");
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -19,7 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
   useCurrentLocationCheckbox.addEventListener("change", function () {
     geoFindMe();
   });
-  updateMapView();
+
+  // slider input listener
+  radiusSlider.addEventListener("input", function () {
+    // amending the display to match slider value
+    radiusLabel.textContent = radiusSlider.value + " km";
+
+    // Updating map view of branches based on new radius value
+    updateMapView();
+  });
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusChoice) {
@@ -215,7 +222,6 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
   } catch (error) {
     console.error('Error fetching data:', error);
   }
-  }
 }
 
   function showBranchOnMap(branchName) {
@@ -229,7 +235,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
 function performSearch() {
   const searchInput = document.getElementById('search-input').value;
   const useCurrentLocationCheckbox = document.getElementById('use-current-location');
- 
+
   if (!useCurrentLocationCheckbox.checked) {
     // Only perform search if "Use Current Location" is not checked
     // Using a geocoding service, Nominatim to get the coordinates
@@ -240,7 +246,9 @@ function performSearch() {
           const result = data[0];
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
+
           const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -250,30 +258,32 @@ function performSearch() {
       .catch(error => console.error('Error:', error));
   }
 }
- 
+
 function geoFindMe() {
     //geolocation variables and checkbox
   const status = document.querySelector("#status");
   const mapLink = document.querySelector("#map-link");
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
- 
- 
+
+
   mapLink.href = "";
   mapLink.textContent = "";
- 
+
   function success(position) {
     //assigning values received from geoloaction allowance
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
+
     status.textContent = "";
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-    
+
     //setting the current co-ordinates within the url
     const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
+
     fetchData(apiUrl, latitude, longitude, true);
   }
- 
+
   //preset location if geolocation is blocked
   function usePresetLocation() {
     const presetLatitude = 51.505;
@@ -282,26 +292,26 @@ function geoFindMe() {
     const presetApiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
 
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
- 
+
     const firstLocation = document.querySelector("#branch-info").dataset.location;
     if (!firstLocation) {
       displayBranchDetails(presetApiUrl, 0);
     }
   }
- 
-  //geolocation validation
+
+  //geolocation validation 
   function error() {
     status.textContent = "Unable to retrieve your location";
-   
+    
     //setting the status of checkbox
     useCurrentLocationCheckbox.checked = false;
- 
+
     if (useCurrentLocationCheckbox.checked) {
     //use preset location if unchecked
       usePresetLocation();
     }
   }
- 
+
   //further geolocation error handling and validation
   if (!navigator.geolocation) {
     status.textContent = "Geolocation is not supported by your browser";
@@ -379,6 +389,7 @@ function displayNearestBranchesList(data) {
     nearestThingyListDiv.appendChild(branchDropdown);
   });
 }
+
 function displayBranchDetails(apiUrl, index) {
   const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
@@ -644,4 +655,5 @@ function toggleFilterDropdown() {
   } else {
     console.log("One or both elements not found.");
   }
+
 }
