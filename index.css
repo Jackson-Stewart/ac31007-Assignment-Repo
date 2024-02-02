@@ -2,7 +2,7 @@
 #map {
     margin-left: auto;
     margin-right: auto;
-    height: 800px;
+    height: 500px;
     margin-top: 20px;
 }
 
@@ -124,18 +124,6 @@ input:checked+.slider:before {
 footer {
     box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1); 
 }
-
-
-/*Used to update map size*/
-@media (min-width: 1200px)
-{
-    .container
-    {
-        max-width: 1800px!important;
-    }
-}
-
-
 
 /* Used to adjust the format of the website based on screen size */
 @media screen and (max-width: 800px) {
@@ -268,3 +256,5 @@ footer {
 .dropdown-menu .services .words p {
     margin-bottom: 5px; /* Adjust margin between text and toggle */
 }
+
+
