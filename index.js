@@ -174,21 +174,48 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
   }
 }
  
+// Modify the existing displayNearestBranchesList function to use the new displayBranchDetails function
 function displayNearestBranchesList(data) {
-  const nearestBranchesListDiv = document.getElementById('nearest-thingy-list');
+  const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
 
-  nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
+  // Clear existing content
+  nearestThingyListDiv.innerHTML = '<h3>Nearest Branches</h3>';
+
+  // Iterate through branches and create buttons for each
   data.slice(0, 5).forEach(branch => {
-    nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
+    const branchButton = document.createElement('button');
+    branchButton.classList.add('btn', 'btn-link');
+    branchButton.textContent = branch.branch_name;
+
+    // Attach a click event listener to show branch details when the button is clicked
+    branchButton.addEventListener('click', function () {
+      showBranchDetails(branch);
+    });
+
+    // Append the button to the nearestThingyListDiv
+    nearestThingyListDiv.appendChild(branchButton);
   });
 }
 
 function displayNearestATMsList(data) {
-  const nearestATMsListDiv = document.getElementById('nearest-thingy-list');
-  
-  nearestATMsListDiv.innerHTML = '<h3>Nearest ATMs</h3>';
+  const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
+
+  // Clear existing content
+  nearestThingyListDiv.innerHTML = '<h3>Nearest ATMs</h3>';
+
+  // Iterate through branches and create buttons for each
   data.slice(0, 5).forEach(atm => {
-    nearestATMsListDiv.innerHTML += `<button class="btn btn-link" onclick="showATMOnMap('${atm.atm_identification}')">${atm.atm_identification}</button><br>`;
+    const ATMButton = document.createElement('button');
+    ATMButton.classList.add('btn', 'btn-link');
+    ATMButton.textContent = `ATM: ${atm.atm_identification}`;
+
+    // Attach a click event listener to show branch details when the button is clicked
+    ATMButton.addEventListener('click', function () {
+      showATMDetails(atm);
+    });
+
+    // Append the button to the nearestThingyListDiv
+    nearestThingyListDiv.appendChild(ATMButton);
   });
 }
 
@@ -320,17 +347,41 @@ function FetchFilters() {
   return ("&filter=" + encodedString)
 }
 
+
 function displayBranchDetails(apiUrl, index) {
-  const branchInfoDiv = document.getElementById('branch-info');
+  const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
-  if(fetchAsyncCount<5){
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      const branch = data[index];
-      //setting and displaying the values of closest branch in html
-      branchInfoDiv.innerHTML = `
-      <h3>${branch.branch_name}</h3>
+  if (fetchAsyncCount < 5) {
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const branch = data[index];
+
+        // Create a button for the branch
+        const branchButton = document.createElement('button');
+        branchButton.classList.add('btn', 'btn-link');
+        branchButton.textContent = branch.branch_name;
+
+        // Attach a click event listener to show branch details when the button is clicked
+        branchButton.addEventListener('click', function () {
+          showBranchDetails(branch);
+        });
+
+        // Append the button to the nearestThingyListDiv
+        nearestThingyListDiv.appendChild(branchButton);
+
+        fetchAsyncCount--;
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }
+}
+
+// Function to show branch details when a branch button is clicked
+function showBranchDetails(branch) {
+  const branchInfoDiv = document.getElementById('branch-info');
+
+  // Setting and displaying the values of the selected branch in HTML
+  branchInfoDiv.innerHTML = `
       <p><strong>Opening Hours:</strong></p>
       <p>Monday: ${branch.opening_hours_monday}</p>
       <p>Tuesday: ${branch.opening_hours_tuesday}</p>
@@ -346,35 +397,58 @@ function displayBranchDetails(apiUrl, index) {
       <p>County: ${branch.country_subdivision}</p>
       <p>Country: ${branch.country}</p>
       <p>Post Code: ${branch.post_code}</p>
-      `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
-      fetchAsyncCount--;
-    })
-    .catch(error => console.error('Error fetching data:', error));
-  }
+  `;
 }
 
 function displayATMDetails(apiUrl, index) {
-
-  const atmInfoDiv = document.getElementById('nearest-info');
+  const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
-  if(fetchAsyncCount<5){
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      const atm = data[index];
+  if (fetchAsyncCount < 5) {
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const atm = data[index];
 
-      // Set and display the values of the closest ATM in HTML
-      displayATMDetails.innerHTML = '<h2>Nearest ATMs Details</h2>';
-      atmInfoDiv.innerHTML = `
-        <h3>${atm.atm_identification}</h3>
-        <p><strong>Supported Currencies:</strong> ${atm.supported_currencies}</p>
-        <p><strong>Supported Languages:</strong> ${atm.supported_languages}</p>
-        <p><strong>Accessibility:</strong> ${atm.accessibility}</p>
-      `;
-      fetchAsyncCount--;
-    })
-    .catch(error => console.error('Error fetching ATM data:', error));
+        // Create a button for the branch
+        const ATMButton = document.createElement('button');
+        ATMButton.classList.add('btn', 'btn-link');
+        ATMButton.textContent = atm.street_name;
+
+        // Attach a click event listener to show branch details when the button is clicked
+        ATMButton.addEventListener('click', function () {
+          showATMDetails(atm);
+        });
+
+        // Append the button to the nearestThingyListDiv
+        nearestThingyListDiv.appendChild(ATMButton);
+
+        fetchAsyncCount--;
+      })
+      .catch(error => console.error('Error fetching data:', error));
   }
+}
+
+function showATMDetails(atm) {
+  const branchInfoDiv = document.getElementById('branch-info');
+
+  // Setting and displaying the values of the selected branch in HTML
+  branchInfoDiv.innerHTML = `
+        <p><strong>Nearest ATM Details:</strong></p>
+        <p>Street Name: ${atm.street_name}</p>
+        <p>Supported Currencies: ${atm.supported_currencies}</p>
+        <p>Supported Languages: ${atm.supported_languages}</p>
+        <p>Accessibility: ${atm.accessibility}</p>
+        <p>ATM Services: ${atm.atm_services}</p>
+        <p>24-Hour Access: ${atm.access_24_hours}</p>
+        <p>Minimum Amount: ${atm.minimum_amount}</p>
+        <p>Other Accessibility Code: ${atm.other_accessibility_code}</p>
+        <p>Other Accessibility Name: ${atm.other_accessibility_name}</p>
+        <p>Type of Location: ${atm.typelocation}</p>
+        <p>Town Name: ${atm.town_name}</p>
+        <p>Country Subdivision: ${atm.country_subdivision}</p>
+        <p>Country: ${atm.country}</p>
+        <p>Post Code: ${atm.post_code}</p>
+  `;
 }
 
 function updateMapView() {
