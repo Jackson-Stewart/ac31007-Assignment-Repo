@@ -73,18 +73,26 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
         //creating a marker for each within radius set
         locations.forEach(function (location) {
           var marker = L.marker([location.lat, location.lng]).addTo(map);
-          var openingHoursSaturday = (location.opening_hours_saturday === "00:00 - 00:00") ? "Closed" : location.opening_hours_saturday;
-          var openingHoursSunday = (location.opening_hours_sunday === "00:00 - 00:00") ? "Closed" : location.opening_hours_sunday;
+          var weekendOpeningHours = {
+           Saturday: (location.openingHoursSaturday === "00:00 - 00:00") ? "Closed" : location.openingHoursSaturday,
+            Sunday: (location.openingHoursSunday === "00:00 - 00:00") ? "Closed" : location.openingHoursSunday
+          };
+          var accessibilityInfo = '<b>Accessibility:</b><br>';
+          var accessibilityItems = location.accessibility.split(',');
 
+          accessibilityItems.forEach(function (item) {
+            accessibilityInfo += item.trim() + '<br>';
+          });
           marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
                             + '</b><br>Monday: ' + location.openingHoursMonday
                             + '</b><br>Tuesday: ' + location.openingHoursTuesday 
                             + '</b><br>Wednesday: ' + location.openingHoursWednesday 
                             + '</b><br>Thursday: ' + location.openingHoursThursday 
                             + '</b><br>Friday: ' + location.openingHoursFriday 
-                            + '</b><br>Saturday: ' + openingHoursSaturday
-                            + '</b><br>Sunday: ' + openingHoursSunday
-                            + '</b><br>Accessibility: ' + location.accessibility
+                            + '</b><br>Saturday: ' + weekendOpeningHours.Saturday
+                            + '</b><br>Sunday: ' + weekendOpeningHours.Sunday
+                            + '<br>'
+                            + '<br>' + accessibilityInfo
                               + '</b><br>Contact Number: ' + location.contactNumber 
                               + '</b><br>Street: ' + location.street 
                               + '</b><br>Town: ' + location.town 
@@ -121,18 +129,35 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
           locations.forEach(function (atm) {
             var marker = L.marker([atm.lat, atm.lng]).addTo(map);
             var access = (atm.access_24_hours === 1) ? '<span style="color: green;">&#10004;</span>' : '<span style="color: red;">&#10008;</span>';
-            
-            marker.bindPopup('<b><br>Street Name: ' + atm.street_name + '</b><br>Useful Information: '
+            var accessibilityInfo = '<b>Accessibility:</b><br>';
+            var accessibilityItems = atm.accessibility.split(',');
+            var servicesInfo = '<b>ATM Services:</b><br>';
+            var servicesItems = atm.atm_services.split(',')
+
+
+            accessibilityItems.forEach(function (item) {
+              accessibilityInfo += item.trim() + '<br>';
+            });
+
+            servicesItems.forEach(function (item) {
+              servicesInfo += item.trim() + '<br>';
+            });
+
+            marker.bindPopup('<b>Street Name: ' + atm.street_name 
+              + '</b><br>'
                 + '</b><br>Supported Currencies: ' + atm.supported_currencies
                 + '</b><br>Supported Languages: ' + atm.supported_languages
                 + '</b><br>Accessibility: ' + atm.accessibility
                 + '</b><br>Street Name: ' + atm.street_name
                 + '</b><br>Supported Languages: ' + atm.supported_languages
-                + '</b><br>ATM Services: ' + atm.atm_services
-                + '</b><br>Accessibility: ' + atm.accessibility
+                + '</b>'
+                + '<br>' + servicesInfo
+                + '</b>'
+                + '<br>' + accessibilityInfo
+                + '</b>'
                 + '</b><br>24-Hour Access: ' + access
                 + '</b><br>Supported Currencies: ' + atm.supported_currencies
-                + '</b><br>Minimum Amount: ' + atm.minimum_amount
+                + '</b><br>Minimum Amount: £' + atm.minimum_amount
                 + '</b><br>Other Accessibility Code: ' + atm.other_accessibility_code
                 + '</b><br>Other Accessibility Name: ' + atm.other_accessibility_name
                 + '</b><br>Type of Location: ' + atm.typelocation
