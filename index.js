@@ -73,15 +73,17 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
         //creating a marker for each within radius set
         locations.forEach(function (location) {
           var marker = L.marker([location.lat, location.lng]).addTo(map);
+          var openingHoursSaturday = (location.opening_hours_saturday === "00:00 - 00:00") ? "Closed" : location.opening_hours_saturday;
+          var openingHoursSunday = (location.opening_hours_sunday === "00:00 - 00:00") ? "Closed" : location.opening_hours_sunday;
+
           marker.bindPopup('<b>' + location.name + '</b><br>Opening Hours: '
                             + '</b><br>Monday: ' + location.openingHoursMonday
                             + '</b><br>Tuesday: ' + location.openingHoursTuesday 
                             + '</b><br>Wednesday: ' + location.openingHoursWednesday 
                             + '</b><br>Thursday: ' + location.openingHoursThursday 
                             + '</b><br>Friday: ' + location.openingHoursFriday 
-                            + '</b><br>Saturday: ' + location.openingHoursSaturday 
-                            + '</b><br>Sunday: ' + location.openingHoursSunday
-                            + '</b><br>Sunday: ' + location.openingHoursSunday
+                            + '</b><br>Saturday: ' + openingHoursSaturday
+                            + '</b><br>Sunday: ' + openingHoursSunday
                             + '</b><br>Accessibility: ' + location.accessibility
                               + '</b><br>Contact Number: ' + location.contactNumber 
                               + '</b><br>Street: ' + location.street 
@@ -119,6 +121,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
           locations.forEach(function (atm) {
             var marker = L.marker([atm.lat, atm.lng]).addTo(map);
             var access = (atm.access_24_hours === 1) ? '<span style="color: green;">&#10004;</span>' : '<span style="color: red;">&#10008;</span>';
+            
             marker.bindPopup('<b><br>Street Name: ' + atm.street_name + '</b><br>Useful Information: '
                 + '</b><br>Supported Currencies: ' + atm.supported_currencies
                 + '</b><br>Supported Languages: ' + atm.supported_languages
@@ -379,6 +382,8 @@ function displayBranchDetails(apiUrl, index) {
 // Function to show branch details when a branch button is clicked
 function showBranchDetails(branch) {
   const branchInfoDiv = document.getElementById('branch-info');
+  const openingHoursSaturday = (branch.opening_hours_saturday === "00:00 - 00:00") ? "Closed" : branch.opening_hours_saturday;
+  const openingHoursSunday = (branch.opening_hours_sunday === "00:00 - 00:00") ? "Closed" : branch.opening_hours_sunday;
 
   // Setting and displaying the values of the selected branch in HTML
   branchInfoDiv.innerHTML = `
@@ -388,8 +393,8 @@ function showBranchDetails(branch) {
       <p>Wednesday: ${branch.opening_hours_wednesday}</p>
       <p>Thursday: ${branch.opening_hours_thursday}</p>
       <p>Friday: ${branch.opening_hours_friday}</p>
-      <p>Saturday: ${branch.opening_hours_saturday}</p>
-      <p>Sunday: ${branch.opening_hours_sunday}</p>
+      <p>Saturday: ${openingHoursSaturday}</p>
+      <p>Sunday: ${openingHoursSunday}</p>
       <p><strong>Accessibility:</strong> ${branch.accessibility}</p>
       <p>Contact Number: ${branch.contact_phone}</p>
       <p>Street: ${branch.street_name}</p>
@@ -430,6 +435,7 @@ function displayATMDetails(apiUrl, index) {
 
 function showATMDetails(atm) {
   const branchInfoDiv = document.getElementById('branch-info');
+  var access = (atm.access_24_hours === 1) ? '<span style="color: green;">&#10004;</span>' : '<span style="color: red;">&#10008;</span>';
 
   // Setting and displaying the values of the selected branch in HTML
   branchInfoDiv.innerHTML = `
@@ -439,7 +445,7 @@ function showATMDetails(atm) {
         <p>Supported Languages: ${atm.supported_languages}</p>
         <p>Accessibility: ${atm.accessibility}</p>
         <p>ATM Services: ${atm.atm_services}</p>
-        <p>24-Hour Access: ${atm.access_24_hours}</p>
+        <p>24-Hour Access: ${access}</p>
         <p>Minimum Amount: ${atm.minimum_amount}</p>
         <p>Other Accessibility Code: ${atm.other_accessibility_code}</p>
         <p>Other Accessibility Name: ${atm.other_accessibility_name}</p>
