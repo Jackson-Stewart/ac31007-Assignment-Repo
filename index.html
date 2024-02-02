@@ -5,178 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ATM and Bank Branch Locator</title>
   <link rel="stylesheet" href="index.css" />
-  <link
-    rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/> <!--Boostrap css template-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/> <!--Open leaflet template-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/> <!-- Bootstrap css template -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/> <!-- Open leaflet template -->
 </head>
 <body>
-
-  <!--Nav bar used at he top of each page-->
-  <div class="navbar1 fixed-top">
-    <nav class="navbar navbar-expand-lg bg-danger">
-      <a class="navbar-brand text-white" href="#">ATM Locator</a>
-
-      <!--Mobile toggle icon-->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </span>
-      </button>
-
-      <!--Nav bar buttons-->
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link text-white" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Contact</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="login.php">Login</a>
-          </li>
-        </ul>
+ 
+<!-- Nav bar used at the top of each page -->
+<div class="navbar1 fixed-top">
+  <nav class="navbar navbar-expand-lg bg-danger">
+    <a class="navbar-brand text-white" href="#">ATM Locator</a>
+ 
+    <!-- Mobile toggle icon -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    </button>
+ 
+    <!-- Nav bar buttons -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link text-white" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="login.php">Login</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<section id="main">
+  <div id="content" class="container">
+ 
+    <!-- Search bar and buttons row -->
+    <div class="row">
+      <div class="col-md-6"> <!-- Adjusted width for the search bar -->
+        <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Please enter a town or city or postcode" aria-label="Search"/>
       </div>
-    </nav>
-  </div>
-
-  <!--Main centre content-->
-  <section id="main">
-    <div id="content" class="container">
-
-      <div class="row">
-        <div id="branch-details" class="col-md-4">
-          <h2>Nearest Branch Details</h2>
-          <div id="branch-info"></div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="search-container">
-            <form class="form-inline my-2 my-lg-0 center">
-              <div class="containers">
-
-                <!--Search bar row-->
-                <div class="row">
-                  <div class="col">
-                    <input id="search-input" class="form-control mr-sm-2" type="search" placeholder="Please enter a town or city or postcode" aria-label="Search"/>
+      <div class="col-md-6">
+        <!-- Filter button with dropdown -->
+        <div class="row">
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle text-white" type="button" id="filterDropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filters
+              </button>
+              <div class="dropdown-menu"  id="filterDropdown" aria-labelledby="filterDropdownButton">
+                <div class="services">
+                  <!-- Filter options -->
+                 <!-- Wheelchair Accessible toggle -->
+                  <div class="words">
+                    <p>Wheelchair Accessible</p>
+                    <label class="switch">
+                        <input type="checkbox" id="WheelchairAccessible" class="filter-checkbox" />
+                        <span class="slider round"></span>
+                    </label>
                   </div>
-                  <div class="col">
-                    <button id="search-button" class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="performSearch()">Search</button>
+                  <!-- AudioCash Machine toggle -->
+                  <div class="words">
+                    <p>AudioCash Machine</p>
+                    <label class="switch">
+                       <input type="checkbox" id="AudioCashMachine" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+
+                    </label>
+                  </div>
+                  <!-- Pin Change toggle -->
+                  <div class="words">
+                    <p>Pin Change</p>
+                    <label class="switch">
+                      <input type="checkbox" id="PinChange" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+
+                    </label>
+                  </div>
+                  <!-- Cash Deposits toggle -->
+                  <div class="words">
+                    <p>Cash Deposits</p>
+                    <label class="switch">
+                       <input type="checkbox" id="CashDeposits" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+                    </label>
+                  </div>
+                  <!-- Cheque Deposits toggle -->
+                  <div class="words">
+                    <p>Cheque Deposits</p>
+                    <label class="switch">
+                      <input type="checkbox" id="ChequeDeposits" class="filter-checkbox"/>
+                        <span class="slider round"></span>
+                    </label>
                   </div>
                 </div>
-
-                <!--Current Location checkbox-->
-                <div class="row">
-                  <label for="use-current-location">Use Current Location</label>
-                  <input type="checkbox" id="use-current-location" class="form-check-input"/>
-                </div>
-
-                <!--Radius Slider
-                <div class="row">
-                  <div class="sliderContainer">
-                      <input type="range" min="1" max="100" value="10" class="sliderRadius" id="radiusSlider">
-                      <span id="radiusLabel">Radius: <span id="radiusValue">10</span> Miles</span>
-                  </div>
-                </div>-->
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="radiusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Radius
+              </button>
+              <div class="dropdown-menu" aria-labelledby="radiusDropdown">
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="1609.34" onclick="updateRadius(this)"> 1 mile
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="3218.69" onclick="updateRadius(this)"> 2 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="8046.72" onclick="updateRadius(this)"> 5 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="16093.4" onclick="updateRadius(this)"> 10 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="40233.6" onclick="updateRadius(this)"> 25 miles
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="radiusChoice" value="80467.2" onclick="updateRadius(this)"> 50 miles
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="dropdown">
+              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="branchOrAtmDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Location Type
+              </button>
+              <div class="dropdown-menu" aria-labelledby="branchOrAtmDropdown">
+                <label class="dropdown-item">
+                  <input type="checkbox" id="locationType" value="branches" onclick="updateLocationType(this)"> Branches
+                </label>
+                <label class="dropdown-item">
+                  <input type="checkbox" id="locationType" value="atm" onclick="updateLocationType(this)"> ATMs
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <button id="search-button" class="btn btn-outline-danger my-2 my-sm-0 float-left" type="button" onclick="performSearch()">Search</button>
           </div>
         </div>
       </div>
-
-      <!--Map Display-->
-      <div class="row">
-        <div class="col-md-12">
-          <div id="map"></div>
-          <a id="map-link" target="_blank"></a>
+    </div>
+    <!-- Current Location checkbox -->
+    <div class="row mt-2">
+      <div class="col">
+        <label for="use-current-location">Use Current Location</label>
+        <input type="checkbox" id="use-current-location" class="form-check-input"/>
+      </div>
+    </div>
         </div>
       </div>
-
-      <!-- Testing-->
-      <div>
-        <button id="find-me">Show my location</button><br />
+    </div>
+  
+  <!-- Map Display -->
+    <div class="row mt-3">
+      <div class="col-md-9"> <!-- Adjusted width for the map -->
+        <div id="map"></div>
+        <a id="map-link" target="_blank"></a>
+      </div>
+      <div class="col-md-3">
+        <div id="nearest-thingy-list" class="mt-2"></div> <!-- Displaying nearest branches here -->
+      </div>
+    </div>
+ 
+    <!-- Testing -->
+    <div class="row mt-3">
+      <div class="col">
+        <button id="find-me" class="btn btn-primary">Show my location</button><br />
         <p id="status"></p>
       </div>
-
-      <!--Filters and services for the map-->
-      <div class="services">
-
-        <!--Wheelchair toggle-->
-        <div class="words"><p>Wheelchair Accessible</p>
-          <label class="switch">
-          <input type="checkbox" />
-          <span class="slider round"></span>
-          </label>
-        </div>
-
-        <!--AudioCash Machine toggle-->
-        <div class="words"><p>AudioCash Machine</p>
-          <label class="switch"> 
-            <input type="checkbox"  />
-            <span class="slider round"></span>
-          </label>
-        </div>
-
-        <!--Pin Change toggle-->
-        <div class="words"><p>Pin Change</p>
-          <label class="switch"> 
-            <input type="checkbox"  />
-            <span class="slider round"></span>
-          </label>
-        </div>
-
-        <!--Cash Deposits toggle-->
-        <div class="words"><p>Cash Deposits</p> 
-          <label class="switch"> 
-            <input type="checkbox"  />
-            <span class="slider round"></span>
-          </label>
-        </div>
-
-        <!--Cheque Deposits toggle-->
-        <div class="words"> <p>Cheque Deposits</p>
-          <label class="switch"> 
-            <input type="checkbox"/>
-            <span class="slider round"></span>
-          </label>
-        </div>
-
-      </div> 
-
     </div>
-  </section>
+<!-- Branch Details -->
 
-  <!--Used a default footer from bootstrap-->
-  <footer class="py-3">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-muted">Home</a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-muted">Features</a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-muted">FAQs</a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-muted">About</a>
-      </li>
-    </ul>
-    <p class="text-center text-muted">© 2024 ATM Finder</p>
-  </footer>
-
-
-  <!--Scripts and APIs used-->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-  <script src="index.js"></script>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <div class="row mt-3">
+      <div id="branch-details" class="col-md-4">
+        <h2>Nearest Branch Details</h2>
+        <div id="branch-info"></div>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- Used a default footer from bootstrap -->
+<footer class="py-3">
+  <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+    <li class="nav-item">
+      <a href="#" class="nav-link px-2 text-muted">Home</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link px-2 text-muted">Features</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link px-2 text-muted">FAQs</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link px-2 text-muted">About</a>
+    </li>
+  </ul>
+  <p class="text-center text-muted">© 2024 ATM Finder</p>
+</footer>
+ 
+<!-- Scripts and APIs used -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="index.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
 </body>
 </html>
