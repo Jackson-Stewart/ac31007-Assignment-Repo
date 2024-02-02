@@ -6,7 +6,7 @@ let fetchAsyncCount = 0;
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
 
-  // Event listener for the "change" event on checkboxes
+  // Event listener for the change of event on checkboxes
   document.querySelectorAll('.filter-checkbox').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {
       FetchFilters();
@@ -46,8 +46,12 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
         }).addTo(map);
 
         apiUrl = `${apiUrl}`;
-    var locations = data.map(branch => ({
-          lat: parseFloat(branch.latitude),
+
+        var locations = [];
+
+      if (locationType === "branches") {
+            locations = data.map(branch => ({
+            lat: parseFloat(branch.latitude),
             lng: parseFloat(branch.longitude),
             name: branch.branch_name,
             openingHoursMonday: branch.opening_hours_monday,
@@ -89,6 +93,56 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
                             // Adds Google maps to each marker
                             );
         });
+
+      } else if (locationType === 'atm') {
+        // Process ATM data
+        locations = data.map(atm => ({
+            lat: parseFloat(atm.latitude),
+            lng: parseFloat(atm.longitude),
+            atm_identification: atm.atm_identification,
+            supported_languages: atm.supported_languages,
+            atm_services: atm.atm_services,
+            accessibility: atm.accessibility,
+            access_24_hours: atm.access_24_hours,
+            supported_currencies: atm.supported_currencies,
+            minimum_amount: atm.minimum_amount,
+            other_accessibility_code: atm.other_accessibility_code,
+            other_accessibility_name: atm.other_accessibility_name,
+            typelocation: atm.other_location_category_description,
+            street_name: atm.street_name,
+            town_name: atm.town_name,
+            country_subdivision: atm.country_subdivision,
+            country: atm.country,
+            post_code: atm.post_code,
+          }));
+
+          locations.forEach(function (atm) {
+            var marker = L.marker([atm.lat, atm.lng]).addTo(map);
+            var access = (atm.access_24_hours === 1) ? '<span style="color: green;">&#10004;</span>' : '<span style="color: red;">&#10008;</span>';
+            marker.bindPopup('<b><br>Street Name: ' + atm.street_name + '</b><br>Useful Information: '
+                + '</b><br>Supported Currencies: ' + atm.supported_currencies
+                + '</b><br>Supported Languages: ' + atm.supported_languages
+                + '</b><br>Accessibility: ' + atm.accessibility
+                + '</b><br>Street Name: ' + atm.street_name
+                + '</b><br>Supported Languages: ' + atm.supported_languages
+                + '</b><br>ATM Services: ' + atm.atm_services
+                + '</b><br>Accessibility: ' + atm.accessibility
+                + '</b><br>24-Hour Access: ' + access
+                + '</b><br>Supported Currencies: ' + atm.supported_currencies
+                + '</b><br>Minimum Amount: ' + atm.minimum_amount
+                + '</b><br>Other Accessibility Code: ' + atm.other_accessibility_code
+                + '</b><br>Other Accessibility Name: ' + atm.other_accessibility_name
+                + '</b><br>Type of Location: ' + atm.typelocation
+                + '</b><br>Town Name: ' + atm.town_name
+                + '</b><br>Country Subdivision: ' + atm.country_subdivision
+                + '</b><br>Country: ' + atm.country
+                + '</b><br>Post Code: ' + atm.post_code
+            );
+        });
+        
+    }
+
+
         const firstLocation = document.querySelector("#branch-info").dataset.location;
         if (!firstLocation) {
           displayBranchDetails(apiUrl, 0);
@@ -100,8 +154,19 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
           userLocationMarker.bindPopup('You are here');
           updateMapView;
         }
-    // Display the list of nearest branches
-        displayNearestBranchesList(data);
+
+        //dependant on that which is being displayed
+        if (locationType === "branches")
+          {
+            //display branch data
+            displayNearestBranchesList(data);
+          }
+        else if (locationType === "atm")
+          {
+            //display atm data
+            displayNearestATMsList(data);
+          }
+
         fetchAsyncCount--;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -110,13 +175,24 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
 }
  
 function displayNearestBranchesList(data) {
-  const nearestBranchesListDiv = document.getElementById('nearest-branches-list');
- 
+  const nearestBranchesListDiv = document.getElementById('nearest-thingy-list');
+
   nearestBranchesListDiv.innerHTML = '<h3>Nearest Branches</h3>';
   data.slice(0, 5).forEach(branch => {
     nearestBranchesListDiv.innerHTML += `<button class="btn btn-link" onclick="showBranchOnMap('${branch.branch_name}')">${branch.branch_name}</button><br>`;
   });
-}function showBranchOnMap(branchName) {
+}
+
+function displayNearestATMsList(data) {
+  const nearestATMsListDiv = document.getElementById('nearest-thingy-list');
+  
+  nearestATMsListDiv.innerHTML = '<h3>Nearest ATMs</h3>';
+  data.slice(0, 5).forEach(atm => {
+    nearestATMsListDiv.innerHTML += `<button class="btn btn-link" onclick="showATMOnMap('${atm.atm_identification}')">${atm.atm_identification}</button><br>`;
+  });
+}
+
+function showBranchOnMap(branchName) {
   const marker = map.getLayers().find(layer => layer.options.title === branchName);
   if (marker) {
     map.setView(marker.getLatLng(), 15);
@@ -138,7 +214,7 @@ function performSearch() {
           const result = data[0];
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
-          const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+          const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
           fetchData(apiUrl, lat, lon);
         } else {
@@ -168,7 +244,7 @@ function geoFindMe() {
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
     
     //setting the current co-ordinates within the url
-    const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
+    const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${latitude}&long=${longitude}&radius=${chosenRadius}&table=${locationType}`;
     fetchData(apiUrl, latitude, longitude, true);
   }
  
@@ -177,7 +253,7 @@ function geoFindMe() {
     const presetLatitude = 51.505;
     const presetLongitude = -0.09;
 
-    const presetApiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
+    const presetApiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${presetLatitude}&long=${presetLongitude}&radius=${chosenRadius}&table=${locationType}&filter=`;
 
     fetchData(presetApiUrl, presetLatitude, presetLongitude);
  
@@ -246,7 +322,8 @@ function FetchFilters() {
 
 function displayBranchDetails(apiUrl, index) {
   const branchInfoDiv = document.getElementById('branch-info');
- 
+  fetchAsyncCount++;
+  if(fetchAsyncCount<5){
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -270,8 +347,34 @@ function displayBranchDetails(apiUrl, index) {
       <p>Country: ${branch.country}</p>
       <p>Post Code: ${branch.post_code}</p>
       `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      fetchAsyncCount--;
     })
     .catch(error => console.error('Error fetching data:', error));
+  }
+}
+
+function displayATMDetails(apiUrl, index) {
+
+  const atmInfoDiv = document.getElementById('nearest-info');
+  fetchAsyncCount++;
+  if(fetchAsyncCount<5){
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      const atm = data[index];
+
+      // Set and display the values of the closest ATM in HTML
+      displayATMDetails.innerHTML = '<h2>Nearest ATMs Details</h2>';
+      atmInfoDiv.innerHTML = `
+        <h3>${atm.atm_identification}</h3>
+        <p><strong>Supported Currencies:</strong> ${atm.supported_currencies}</p>
+        <p><strong>Supported Languages:</strong> ${atm.supported_languages}</p>
+        <p><strong>Accessibility:</strong> ${atm.accessibility}</p>
+      `;
+      fetchAsyncCount--;
+    })
+    .catch(error => console.error('Error fetching ATM data:', error));
+  }
 }
 
 function updateMapView() {
@@ -289,7 +392,7 @@ function updateMapView() {
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
 
-            const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+            const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
             fetchData(apiUrl, lat, lon, false);
           } else {
@@ -314,7 +417,7 @@ function updateMapView() {
             const lat = parseFloat(result.lat);
             const lon = parseFloat(result.lon);
 
-            const apiUrl = `https://qaxsjh0fzf.execute-api.us-east-1.amazonaws.com/production/res?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
+            const apiUrl = `https://8vl4yr0ldj.execute-api.eu-west-2.amazonaws.com/production/resources?lat=${lat}&long=${lon}&radius=${chosenRadius}&table=${locationType}`;
 
             fetchData(apiUrl, lat, lon, false);
           } else {
