@@ -1,6 +1,7 @@
 let map;
 let radiusSlider = document.getElementById("radiusSlider"); // Corrected variable name
 let radiusLabel = document.getElementById("radiusValue");
+let fetchAsyncCount = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
   const useCurrentLocationCheckbox = document.querySelector("#use-current-location");
@@ -22,7 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiusLabel) {
-    //fetching data from api
+  
+  //limiting api calls
+  fetchAsyncCount++;
+  if(fetchAsyncCount<5){
+  //fetching data from api
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
@@ -79,10 +84,11 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
       userLocationMarker = L.marker([presetLatitude, presetLongitude]).addTo(map);
       userLocationMarker.bindPopup('You are here');
     }
-
+    fetchAsyncCount--;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
+}
 }
  
 function performSearch() {
@@ -178,7 +184,9 @@ function geoFindMe() {
 
 function displayBranchDetails(apiUrl, index) {
   const branchInfoDiv = document.getElementById('branch-info');
-
+  //limiting api calls
+  fetchAsyncCount++;
+  if(fetchAsyncCount<5){
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -195,6 +203,8 @@ function displayBranchDetails(apiUrl, index) {
         <p>Saturday: ${branch.opening_hours_saturday}</p>
         <p>Sunday: ${branch.opening_hours_sunday}</p>
       `;//<p><strong>Accessibility:</strong> ${branch.accessibility}</p>
+      fetchAsyncCount--;
     })
     .catch(error => console.error('Error fetching data:', error));
+}
 }
