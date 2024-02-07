@@ -29,7 +29,7 @@ async function fetchData(apiUrl, presetLatitude, presetLongitude, geoUsed, radiu
     const PassFilter = FetchFilters();
     apiUrl += PassFilter;
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } });
         const data = await response.json();
     
         //resetting the map
@@ -380,7 +380,7 @@ function displayBranchDetails(apiUrl, index) {
   const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
   if (fetchAsyncCount < 5) {
-    fetch(apiUrl)
+    fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } })
       .then(response => response.json())
       .then(data => {
         
@@ -441,7 +441,7 @@ function displayATMDetails(apiUrl, index) {
   const nearestThingyListDiv = document.getElementById('nearest-thingy-list');
   fetchAsyncCount++;
   if (fetchAsyncCount < 5) {
-    fetch(apiUrl)
+    fetch(apiUrl, {   headers: {     'x-api-key': 'WeqnBxTK6oAojiK25NXj1JT6aNa2B4z21heNJahg',   } })
       .then(response => response.json())
       .then(data => {
         const atm = data[index];
