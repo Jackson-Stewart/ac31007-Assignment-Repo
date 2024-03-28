@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function redirectToLogin() {
-    window.location.href = 'login.php'; // Replace with the actual path to your customer page
+    window.location.href = 'login.php'; 
 }
 
 function redirectToMap() {
-    window.location.href = 'index.html'; // Replace with the actual path to your staff page
+    window.location.href = 'index.html'; 
 }
